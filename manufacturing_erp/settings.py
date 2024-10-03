@@ -84,9 +84,7 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'Cluster0',
         'CLIENT': {
-            'host': 'mongodb+srv://manufacturingerp:manufacturingerp@cluster0.0e3st.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-            'ssl': True,
-            'ssl_cert_reqs': 'CERT_NONE',  # Disable certificate verification
+            'host': 'mongodb+srv://manufacturingerp:manufacturingerp@cluster0.0e3st.mongodb.net/?retryWrites=true&w=majority&tls=true&appName=Cluster0',
         }
     }
 }
