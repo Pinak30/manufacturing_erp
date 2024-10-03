@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'erp'
+    'authentication',
+    'erp',
+    'inventory',
+    'production',
+    'finance'
 ]
 
 MIDDLEWARE = [
@@ -81,6 +85,8 @@ DATABASES = {
         'NAME': 'Cluster0',
         'CLIENT': {
             'host': 'mongodb+srv://manufacturingerp:manufacturingerp@cluster0.0e3st.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+            'ssl': True,
+            'ssl_cert_reqs': 'CERT_NONE',  # Disable certificate verification
         }
     }
 }
