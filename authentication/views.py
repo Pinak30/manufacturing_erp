@@ -6,6 +6,7 @@ from django.template import loader
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, SignUpForm
+from .models import Employee, WorkDetails
 
 
 # def login(request):
@@ -23,6 +24,15 @@ def employee_detail(request):
     return render(request, 'home/profile.html')
     # html_template = loader.get_template('home/profile.html')
     # return HttpResponse(html_template.render(context, request))
+
+def employee_list(request):
+    emp = Employee.objects.all()
+    # workdl = WorkDetails.objects.all()
+    context = {
+        'emp': emp,
+        # 'workdl': workdl,
+    }
+    return render(request, 'home/tables.html', context)
 
 
 def login_view(request):
