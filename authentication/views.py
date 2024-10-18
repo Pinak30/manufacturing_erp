@@ -9,8 +9,8 @@ from .forms import LoginForm, SignUpForm
 from .models import Employee, WorkDetails
 
 
-# def login(request):
-#     return render(request, 'login.html')
+def login(request):
+    return render(request, 'accounts/login.html')
 
 # @login_required(login_url="/login/")
 def index(request):
