@@ -2,4 +2,4 @@ from django.shortcuts import render
 
 # Create your views here.
 def inventory(request):
-    return render(request, 'inventory.html')
+    return render(request, 'home/inventory.html')
