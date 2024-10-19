@@ -32,13 +32,13 @@
           </li> -->
           <li class="nav-item">
             <!-- <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="home/profile.html"> -->
-            <a class="nav-link" href="employee/">
+            <a class="nav-link" href="{% url 'employee_detail' %}">
               <i class="ni ni-single-02 text-yellow"></i>
               <span class="nav-link-text">Profile</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="list/">
+            <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="{% url 'employee_list' %}">
               <i class="ni ni-bullet-list-67 text-default"></i>
               <span class="nav-link-text">Employee List</span>
             </a>

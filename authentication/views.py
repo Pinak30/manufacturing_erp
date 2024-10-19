@@ -5,11 +5,36 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, SignUpForm
-from .models import Employee, WorkDetails
+from django.contrib import messages
+from .forms import *
+from .models import *
 
 
 def login(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        try:
+            # Fetch the employee by email
+            employee = Employee.objects.get(email=email)
+
+            # Check if the password matches (you may want to hash passwords in a real application)
+            if employee.password == password:
+                # Redirect based on department
+                if employee.department == 'Finance':
+                    return redirect('finance')  # Adjust the finance URL as needed
+                elif employee.department == 'Inventory':
+                    return redirect('inventory')  # Adjust the inventory URL as needed
+                elif employee.department == 'Production':
+                    return redirect('production')  # Adjust the production URL as needed
+                elif employee.department == 'HR':
+                    return redirect('index')  # Redirect to a default page
+            else:
+                return render(request, 'accounts/login.html', {'error': 'Invalid credentials'})
+
+        except DoesNotExist:
+            return render(request, 'accounts/login.html', {'error': 'Employee not found'})
     return render(request, 'accounts/login.html')
 
 # @login_required(login_url="/login/")
@@ -20,66 +45,23 @@ def index(request):
     return HttpResponse(html_template.render(context, request))
 
 def employee_detail(request):
-    # context = {'segment': 'index'}
-    return render(request, 'home/profile.html')
-    # html_template = loader.get_template('home/profile.html')
-    # return HttpResponse(html_template.render(context, request))
-
-def employee_list(request):
-    emp = Employee.objects.all()
-    # workdl = WorkDetails.objects.all()
-    context = {
-        'emp': emp,
-        # 'workdl': workdl,
-    }
-    return render(request, 'home/tables.html', context)
-
-
-def login_view(request):
-    form = LoginForm(request.POST or None)
-
-    msg = None
-
-    if request.method == "POST":
-
-        if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect("/")
-            else:
-                msg = 'Invalid credentials'
-        else:
-            msg = 'Error validating the form'
-
-    return render(request, "accounts/login.html", {"form": form, "msg": msg})
-
-
-def register_user(request):
-    msg = None
-    success = False
-
-    if request.method == "POST":
+    if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get("username")
-            raw_password = form.cleaned_data.get("password1")
-            user = authenticate(username=username, password=raw_password)
-
-            msg = 'User created - please <a href="accounts/login">login</a>.'
-            success = True
-
-            # return redirect("/login/")
-
-        else:
-            msg = 'Form is not valid'
+            messages.success(request, "Employee details saved successfully!")
+            form = SignUpForm()  # Reset the form
     else:
         form = SignUpForm()
 
-    return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
+    return render(request, 'home/profile.html', {'form': form})
+
+def employee_list(request):
+    emp = Employee.objects()  # Fetch all Employee documents
+    context = {
+        'emp': emp,
+    }
+    return render(request, 'home/tables.html', context)
 
 # @login_required(login_url="/login/")
 # def pages(request):

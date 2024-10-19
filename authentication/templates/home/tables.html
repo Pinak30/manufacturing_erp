@@ -19,7 +19,7 @@
             </nav>
           </div>
           <div class="col-lg-6 col-5 text-right">
-            <a href="/employee/" class="btn btn-sm btn-neutral">New</a>
+            <a href="{% url 'employee_detail' %}" class="btn btn-sm btn-neutral">New</a>
             <a href="#" class="btn btn-sm btn-neutral">Filters</a>
           </div>
         </div>
@@ -54,9 +54,9 @@
                       <th scope="row">
                         <div class="media align-items-center">
                           <div class="media-body">
-                            <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Ryan Tompson">
+                            <!-- <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Ryan Tompson">
                               <img alt="Image placeholder" src="/static/assets/img/theme/team-1.jpg">
-                            </a>
+                            </a> -->
                             <span class="name mb-0 text-sm">{{ employee.name }}</span>
                           </div>
                         </div>

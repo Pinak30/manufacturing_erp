@@ -13,7 +13,7 @@
     <!-- <div class="row">
       <div class="col-lg-7 col-md-10">
         <h1 class="display-2 text-white"> 
-          Hello {{ request.user.username }}
+          Hello 
         </h1>
         <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
         <a href="#!" class="btn btn-neutral">Edit profile</a>
@@ -22,7 +22,7 @@
   <!-- </div> -->
 <!-- </div> -->
 <!-- Page content -->
-<div class="container-fluid mt-3">
+<!-- <div class="container-fluid mt-3">
   <div class="row">
     <div class="col-xl-4 order-xl-2">
       <div class="card card-profile">
@@ -50,7 +50,7 @@
                   <span class="heading">Emp1</span>
                   <span class="description">Job Role</span>
                 </div> -->
-                <div>
+                <!-- <div>
                   <span class="heading">40000</span>
                   <span class="description">Salary</span>
                 </div>
@@ -63,10 +63,10 @@
           </div>
           <div class="text-center">
             <h5 class="h3">
-              {{ request.user.username }}
+
             </h5>
             <div class="h5 font-weight-300">
-              {{ request.user.email }}
+
             </div>
             <div class="h5 mt-4">
               <i class="ni business_briefcase-24 mr-2"></i>Job Role - Department
@@ -77,146 +77,118 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-xl-8 order-xl-1">
+    </div> --> 
+    <div class="col-xl-12 order-xl-1">
       <div class="card">
-        <div class="card-header">
-          <div class="row align-items-center">
-            <div class="col-8">
-              <h3 class="mb-0">Add Profile </h3>
-            </div>
-            <div class="col-4 text-right">
-              <a href="#!" class="btn btn-sm btn-primary">Save</a>
-            </div>
+          <div class="card-header">
+              <div class="row align-items-center">
+                  <div class="col-8">
+                      <h3 class="mb-0">Add Profile</h3>
+                  </div>
+                  <div class="col-4 text-right">
+                      <button type="submit" class="btn btn-sm btn-primary">Save</button> <!-- Button to submit the form -->
+                  </div>
+              </div>
           </div>
-        </div>
-        <div class="card-body">
-          <form>
-            <h6 class="heading-small text-muted mb-4">User information</h6>
-            <div class="pl-lg-4">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-username">Name</label>
-                    <input type="text" id="input-username" class="form-control" placeholder="Full Name" value="{{ request.user.name }}">
+          <div class="card-body">
+              <form method="POST"> <!-- Specify method as POST for form submission -->
+                  {% csrf_token %} <!-- Django CSRF token for security -->
+                  <h6 class="heading-small text-muted mb-4">User information</h6>
+                  <div class="pl-lg-4">
+                      <div class="row">
+                          <div class="col-lg-6">
+                              <div class="form-group">
+                                  <label class="form-control-label" for="id_name">Name</label>
+                                  {{ form.name }} <!-- Render the name field -->
+                              </div>
+                          </div>
+                          <div class="col-lg-6">
+                              <div class="form-group">
+                                  <label class="form-control-label" for="id_email">Email address</label>
+                                  {{ form.email }} <!-- Render the email field -->
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-lg-6">
+                              <div class="form-group">
+                                  <label class="form-control-label" for="id_password">Password</label>
+                                  {{ form.password }} <!-- Render the password field -->
+                              </div>
+                          </div>
+                          <div class="col-lg-6">
+                              <div class="form-group">
+                                  <label class="form-control-label" for="id_department">Department</label>
+                                  {{ form.department }} <!-- Render the department field -->
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-lg-6">
+                              <div class="form-group">
+                                  <label class="form-control-label" for="id_role">Role</label>
+                                  {{ form.role }} <!-- Render the role field -->
+                              </div>
+                          </div>
+                          <div class="col-lg-6">
+                              <div class="form-group">
+                                  <label class="form-control-label" for="id_date_of_joining">Date of Joining</label>
+                                  {{ form.date_of_joining }} <!-- Render the date of joining field -->
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-email">Email address</label>
-                    <input type="email" id="input-email" class="form-control" placeholder="{{ request.user.email }}">
+                  <hr class="my-4" />
+                  <!-- Contact information -->
+                  <h6 class="heading-small text-muted mb-4">Contact information</h6>
+                  <div class="pl-lg-4">
+                      <div class="row">
+                          <div class="col-lg-6">
+                              <div class="form-group">
+                                  <label class="form-control-label" for="id_contact_no">Contact Number</label>
+                                  {{ form.contact_no }} <!-- Render the contact number field -->
+                              </div>
+                          </div>
+                          <div class="col-lg-6">
+                              <div class="form-group">
+                                  <label class="form-control-label" for="id_emrg_contact_no">Emergency Contact Number</label>
+                                  {{ form.emrg_contact_no }} <!-- Render the emergency contact number field -->
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-first-name">Password</label>
-                    <input type="text" id="input-first-name" class="form-control" placeholder="Password" value="{{ request.user.password }}">
+                  <hr class="my-4" />
+                  <!-- About Employee -->
+                  <h6 class="heading-small text-muted mb-4">About Employee</h6>
+                  <div class="pl-lg-4">
+                      <div class="form-group">
+                          <label class="form-control-label">History</label>
+                          {{ form.history }} <!-- Render the history field -->
+                      </div>
                   </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                      <label class="form-control-label" for="input-department">Department</label>
-                      <select id="input-department" class="form-control">
-                          <option value="" disabled selected>Select a Department</option> <!-- Placeholder with default selection -->
-                          <option value="Inventory">Inventory</option>
-                          <option value="Production">Production</option>
-                          <option value="Finance">Finance</option>
-                          <option value="HR">HR</option>
-                      </select>
+                  <div class="row">
+                      <div class="col-lg-6">
+                          <div class="form-group">
+                              <label class="form-control-label" for="id_shift_time">Shift Time</label>
+                              {{ form.shift_time }} <!-- Render the shift time field -->
+                          </div>
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="form-group">
+                              <label class="form-control-label" for="id_salary">Salary</label>
+                              {{ form.salary }} <!-- Render the salary field -->
+                          </div>
+                      </div>
                   </div>
-                </div>             
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-last-name">Role</label>
-                    <input type="text" id="input-last-name" class="form-control" placeholder="Role" value="{{ request.user.role }}">
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-date-of-joining">Date of Joining</label>
-                    <input type="date" id="input-date-of-joining" class="form-control" placeholder="Date of joining">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr class="my-4" />
-            <!-- Address -->
-            <h6 class="heading-small text-muted mb-4">Contact information</h6>
-            <div class="pl-lg-4">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-address">Address</label>
-                    <input id="input-address" class="form-control" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09" type="text">
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-city">City</label>
-                    <input type="text" id="input-city" class="form-control" placeholder="City" value="New York">
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-country">Country</label>
-                    <input type="text" id="input-country" class="form-control" placeholder="Country" value="United States">
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-country">Postal code</label>
-                    <input type="number" id="input-postal-code" class="form-control" placeholder="Postal code">
-                  </div>
-                </div>
-              </div> -->
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-username">Contact Number</label>
-                    <input type="tel" id="input-contact-number" class="form-control" placeholder="Contact Number" pattern="[0-9]{10}" maxlength="15"value="{{ request.user.contact_no }}">
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-email">Emergency Contact Number</label>
-                    <input type="tel" id="input-emergency-contact-number" class="form-control" placeholder="Emergency Contact Number" pattern="[0-9]{10}" maxlength="15"value="{{ request.user.emrg_contact_no }}">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr class="my-4" />
-            <!-- Description -->
-            <h6 class="heading-small text-muted mb-4">About Employee</h6>
-            <div class="pl-lg-4">
-              <div class="form-group">
-                <label class="form-control-label">History</label>
-                <textarea rows="4" class="form-control" placeholder="A few words about you ...">A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label class="form-control-label" for="input-date-of-joining">Shift Time</label>
-                  <input type="time" id="input-shift-time" class="form-control" placeholder="Shift Time">
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="form-group">
-                  <label class="form-control-label" for="input-salary">Salary</label>
-                  <input type="number" id="input-salary" class="form-control" placeholder="Salary" step="0.01" min="0">
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
+                  <button type="submit" class="btn btn-primary">Submit</button> <!-- Button to submit the form -->
+                  {% if success_message %} <!-- Display success message if it exists -->
+                      <div class="alert alert-success mt-3">{{ success_message }}</div>
+                  {% endif %}
+              </form>
+          </div>
       </div>
-    </div>
-  </div>
-
+  </div>  
+  
   {% include "includes/footer.html" %}
 
 </div>

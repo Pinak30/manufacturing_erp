@@ -80,15 +80,24 @@ WSGI_APPLICATION = 'manufacturing_erp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'Cluster0',
-        'CLIENT': {
-            'host': 'mongodb+srv://manufacturingerp:manufacturingerp@cluster0.0e3st.mongodb.net/?retryWrites=true&w=majority&tls=true&appName=Cluster0',
-        }
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'Cluster0',
+#         'CLIENT': {
+#             'host': 'mongodb+srv://manufacturingerp:manufacturingerp@cluster0.0e3st.mongodb.net/?retryWrites=true&w=majority&tls=true&appName=Cluster0',
+#         }
+#     }
+# }
+
+from mongoengine import connect
+
+connect(
+    db='Cluster0',
+    host='mongodb+srv://manufacturingerp:manufacturingerp@cluster0.0e3st.mongodb.net/Cluster0?retryWrites=true&w=majority&tls=true&appName=Cluster0',
+)
+
+
 
 
 # Password validation
