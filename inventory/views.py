@@ -25,24 +25,28 @@ def stock_coverage(request):
     context = {
         'app_name': 'Inventory',
     }
+    # fetch all finished and raw material products and send via dictionary give name>> products
     return render(request, 'home/stock_cvg.html',context)
 
 def milk_procurementation(request):
     context = {
         'app_name': 'Inventory',
     }
+    # fetch milk details and add dictionary give name>> milk
     return render(request, 'home/milk_procurementation.html',context)
 
 def active_sku(request):
     context = {
         'app_name': 'Inventory',
     }
+     # fetch only finished products and add dictionary give name>> products
     return render(request, 'home/active_sku.html',context)
 
 def all_product_list(request):
     context = {
         'app_name': 'Inventory',
     }
+     # fetch only finished products and add dictionary give name>> products
     return render(request, 'home/all_product.html',context)
 
 def inventory_value(request):
