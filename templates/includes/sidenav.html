@@ -4,7 +4,7 @@
     <!-- Brand -->
     <div class="sidenav-header  align-items-center">
       <a class="navbar-brand" href="/">
-        <i class="fas fa-handshake"></i>{{ app_name }}<sub style="font-size:xx-small;">Manufacturing ERP</sub>
+        <i class="fas fa-handshake"></i> {{ app_name }}<sub style="font-size:xx-small;">Manufacturing ERP</sub>
       </a>
     </div>
     <div class="navbar-inner">
@@ -13,7 +13,7 @@
         <!-- Nav items -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'index_auth' %}">
+            <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'index' %}">
               <i class="ni ni-tv-2 text-primary"></i>
               <span class="nav-link-text">Dashboard</span>
             </a>
@@ -49,8 +49,63 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link {% if 'inventory' in segment %} active {% endif %}" href="{% url 'inventory' %}">
-              <i class="ni ni-tv-2 text-primary"></i>
+              <i class="fas fa-chart-pie"></i>
               <span class="nav-link-text">Dashboard</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'stock_qty' in segment %} active {% endif %}" href="{% url 'stock_qty' %}">
+              <i class="fas fa-layer-group"></i>
+              <span class="nav-link-text">Stock Quantity</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'stock_coverage' in segment %} active {% endif %}" href="{% url 'stock_coverage' %}">
+              <i class="fas fa-calendar-alt"></i>
+              <span class="nav-link-text">Stock Coverage</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'milk_procurementation' in segment %} active {% endif %}" href="{% url 'milk_procurementation' %}">
+              <i class="fas fa-truck-moving"></i>
+              <span class="nav-link-text">Milk Procurementation</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'active_sku' in segment %} active {% endif %}" href="{% url 'active_sku' %}">
+              <i class="fas fa-cubes"></i>
+              <span class="nav-link-text">Active SKU</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'all_product_list' in segment %} active {% endif %}" href="{% url 'all_product_list' %}">
+              <i class="fas fa-clipboard-list"></i>
+              <span class="nav-link-text">All Products</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'inventory_value' in segment %} active {% endif %}" href="{% url 'inventory_value' %}">
+              <i class="fas fa-coins"></i>
+              <span class="nav-link-text">Inventory Value</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'inventory_transaction_summary' in segment %} active {% endif %}" href="{% url 'inventory_transaction_summary' %}">
+              <i class="fas fa-book"></i>
+              <span class="nav-link-text">Inventory Transaction Summary</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'stoke_movement_analysis' in segment %} active {% endif %}" href="{% url 'stoke_movement_analysis' %}">
+              <i class="fas fa-dolly-flatbed"></i>
+              <span class="nav-link-text">Stock Movement Analysis</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'open_purchase_orders' in segment %} active {% endif %}" href="{% url 'open_purchase_orders' %}">
+              <i class="fas fa-boxes"></i>
+              <span class="nav-link-text">Open Purchase Orders</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'cycle_count_stock_audit' in segment %} active {% endif %}" href="{% url 'cycle_count_stock_audit' %}">
+              <i class="fas fa-people-carry"></i>
+              <span class="nav-link-text">Cycle Counts and Stock Audit</span>
+            </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'historic_trend_analysis' in segment %} active {% endif %}" href="{% url 'historic_trend_analysis' %}">
+              <i class="fas fa-chart-line"></i>
+              <span class="nav-link-text">Historic Trend Analysis</span>
             </a>
         </ul>
       </div>
@@ -61,7 +116,7 @@
     <!-- Brand -->
     <div class="sidenav-header  align-items-center">
       <a class="navbar-brand" href="/">
-        <i class="fas fa-industry"></i>{{ app_name }}<sub style="font-size:xx-small;">Manufacturing ERP</sub>
+        <i class="fas fa-industry"></i> {{ app_name }}<sub style="font-size:xx-small;">Manufacturing ERP</sub>
       </a>
     </div>
     <div class="navbar-inner">
@@ -83,7 +138,7 @@
     <!-- Brand -->
     <div class="sidenav-header  align-items-center">
       <a class="navbar-brand" href="/">
-        <i class="fas fa-hand-holding-usd"></i>>{{ app_name }}<sub style="font-size:xx-small;">Manufacturing ERP</sub>
+        <i class="fas fa-hand-holding-usd"></i> {{ app_name }}<sub style="font-size:xx-small;">Manufacturing ERP</sub>
       </a>
     </div>
     <div class="navbar-inner">

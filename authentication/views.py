@@ -47,6 +47,10 @@ def index(request):
     return HttpResponse(html_template.render(context, request))
 
 def employee_detail(request):
+    context = {
+        'app_name': 'HR',
+        'segment': 'index'
+    }
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -55,12 +59,13 @@ def employee_detail(request):
             form = SignUpForm()  # Reset the form
     else:
         form = SignUpForm()
-
-    return render(request, 'home/profile.html', {'form': form})
+    context['form'] = form
+    return render(request, 'home/profile.html', context)
 
 def employee_list(request):
     emp = Employee.objects()  # Fetch all Employee documents
     context = {
+        'app_name': 'HR',
         'emp': emp,
     }
     return render(request, 'home/tables.html', context)
