@@ -39,8 +39,10 @@ def login(request):
 
 # @login_required(login_url="/login/")
 def index(request):
-    context = {'segment': 'index'}
-
+    context = {
+        'app_name': 'HR',  # Pass app name dynamically
+        'segment': 'index'
+    }
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))
 

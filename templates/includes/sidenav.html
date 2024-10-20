@@ -1,0 +1,104 @@
+<nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+  {% if app_name == 'HR' %}
+  <div class="scrollbar-inner">
+    <!-- Brand -->
+    <div class="sidenav-header  align-items-center">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-handshake"></i>{{ app_name }}<sub style="font-size:xx-small;">Manufacturing ERP</sub>
+      </a>
+    </div>
+    <div class="navbar-inner">
+      <!-- Collapse -->
+      <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+        <!-- Nav items -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="{% url 'index_auth' %}">
+              <i class="ni ni-tv-2 text-primary"></i>
+              <span class="nav-link-text">Dashboard</span>
+            </a>
+          <li class="nav-item">
+              <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="{% url 'employee_detail' %}">
+              <i class="ni ni-single-02 text-yellow"></i>
+              <span class="nav-link-text">Profile</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="{% url 'employee_list' %}">
+              <i class="ni ni-bullet-list-67 text-default"></i>
+              <span class="nav-link-text">Employee List</span>
+            </a>
+          </li>
+        <!-- <hr class="my-3"> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% elif app_name == 'Inventory' %}
+  <div class="scrollbar-inner">
+    <!-- Brand -->
+    <div class="sidenav-header  align-items-center">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-truck-loading"></i> {{ app_name }}<sub style="font-size:xx-small;">Manufacturing ERP</sub>
+      </a>
+    </div>
+    <div class="navbar-inner">
+      <!-- Collapse -->
+      <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+        <!-- Nav items -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link {% if 'inventory' in segment %} active {% endif %}" href="{% url 'inventory' %}">
+              <i class="ni ni-tv-2 text-primary"></i>
+              <span class="nav-link-text">Dashboard</span>
+            </a>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% elif app_name == 'Production' %}
+  <div class="scrollbar-inner">
+    <!-- Brand -->
+    <div class="sidenav-header  align-items-center">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-industry"></i>{{ app_name }}<sub style="font-size:xx-small;">Manufacturing ERP</sub>
+      </a>
+    </div>
+    <div class="navbar-inner">
+      <!-- Collapse -->
+      <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+        <!-- Nav items -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link {% if 'production' in segment %} active {% endif %}" href="{% url 'production' %}">
+              <i class="ni ni-tv-2 text-primary"></i>
+              <span class="nav-link-text">Dashboard</span>
+            </a>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% elif app_name == 'Finance' %}
+  <div class="scrollbar-inner">
+    <!-- Brand -->
+    <div class="sidenav-header  align-items-center">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-hand-holding-usd"></i>>{{ app_name }}<sub style="font-size:xx-small;">Manufacturing ERP</sub>
+      </a>
+    </div>
+    <div class="navbar-inner">
+      <!-- Collapse -->
+      <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+        <!-- Nav items -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link {% if 'production' in segment %} active {% endif %}" href="{% url 'production' %}">
+              <i class="ni ni-tv-2 text-primary"></i>
+              <span class="nav-link-text">Dashboard</span>
+            </a>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</nav>
