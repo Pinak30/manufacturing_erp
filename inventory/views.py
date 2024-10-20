@@ -25,6 +25,7 @@ def stock_coverage(request):
     context = {
         'app_name': 'Inventory',
     }
+    # fetch all finished and raw material products and send via dictionary give name>> products
     return render(request, 'home/stock_cvg.html',context)
 
 def milk_procurementation(request):
