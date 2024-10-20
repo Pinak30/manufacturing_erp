@@ -4,6 +4,7 @@ from .views import *
 urlpatterns = [
     path('inventory/', inventory, name='inventory'),
     path('stock/', stock_qty, name='stock_qty'),
+    path('stock_qty', stock_qty_raw, name='stock_qty_raw'),
     path('stock_coverage/', stock_coverage, name='stock_coverage'),
     path('milk_procurementation/', milk_procurementation, name='milk_procurementation'),
     path('sku/', active_sku, name='active_sku'),

@@ -11,7 +11,15 @@ def stock_qty(request):
         context = {
         'app_name': 'Inventory',
     }
+        # fetch only finished products and send via dictionary give name>> products
         return render(request, 'home/stock_qty.html',context)
+
+def stock_qty_raw(request):
+        context = {
+        'app_name': 'Inventory',
+    }
+        # fetch only raw materials and send via dictionary give name>> materials
+        return render(request, 'home/stock_qty_raw.html',context)
 
 def stock_coverage(request):
     context = {
