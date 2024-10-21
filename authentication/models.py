@@ -1,22 +1,5 @@
 from mongoengine import Document, StringField, EmailField, DateField, IntField, DecimalField, ReferenceField, ListField
 
-class Employee(Document):
-    name = StringField(required=True, max_length=255)
-    email = EmailField(required=True, unique=True)
-    password = StringField(required=True, max_length=255)
-    department = StringField(required=True, max_length=100)
-    role = StringField(required=True, max_length=100)
-    contact_no = StringField(max_length=15)  
-    emrg_contact_no = StringField(max_length=15)
-    date_of_joining = DateField(required=True)
-    history = StringField()
-
-
-class WorkDetails(Document):
-    employee = ReferenceField(Employee, reverse_delete_rule=4) 
-    shift_time = StringField()  
-    salary = DecimalField(precision=2)
-
 
 class Department(Document):
     department_id = StringField(primary_key=True, max_length=100)
@@ -35,8 +18,11 @@ class Employee(Document):
     designation_id = ReferenceField(Designation, reverse_delete_rule=4)  # Foreign Key to Designation
     date_of_joining = DateField(required=True)
     shift_timings = StringField(max_length=100)  
+    email_id = EmailField()
     contact_info = StringField(max_length=15) 
     emergency_contact = StringField(max_length=15)
+    role = StringField()
+    password = StringField(max_length=20)
     work_history = StringField() 
 
 

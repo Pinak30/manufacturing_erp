@@ -2,196 +2,119 @@
 
 {% block title %} Profile {% endblock title %}
 
-{% block content %}
-
-<!-- <div class="header pb-6 d-flex align-items-center" 
-     style="min-height: 500px; background-image: url(/static/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;"> -->
-  <!-- Mask -->
-  <!-- <span class="mask bg-gradient-default opacity-8"></span> -->
-  <!-- Header container -->
-  <!-- <div class="container-fluid d-flex align-items-center"> -->
-    <!-- <div class="row">
-      <div class="col-lg-7 col-md-10">
-        <h1 class="display-2 text-white"> 
-          Hello 
-        </h1>
-        <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
-        <a href="#!" class="btn btn-neutral">Edit profile</a>
-      </div>
-    </div> -->
-  <!-- </div> -->
-<!-- </div> -->
-<!-- Page content -->
-<!-- <div class="container-fluid mt-3">
-  <div class="row">
-    <div class="col-xl-4 order-xl-2">
-      <div class="card card-profile">
-        <img src="/static/assets/img/theme/img-1-1000x600.jpg" alt="Image placeholder" class="card-img-top">
-        <div class="row justify-content-center">
-          <div class="col-lg-3 order-lg-2">
-            <div class="card-profile-image">
-              <a href="#">
-                <img src="/static/assets/img/theme/team-4.jpg" class="rounded-circle">
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-          <div class="d-flex justify-content-between">
-            <a href="#" class="btn btn-sm btn-info  mr-4 ">Connect</a>
-            <a href="#" class="btn btn-sm btn-default float-right">Message</a>
-          </div>
-        </div>
-        <div class="card-body pt-0">
-          <div class="row">
-            <div class="col">
-              <div class="card-profile-stats d-flex justify-content-center">
-                <!-- <div>
-                  <span class="heading">Emp1</span>
-                  <span class="description">Job Role</span>
-                </div> -->
-                <!-- <div>
-                  <span class="heading">40000</span>
-                  <span class="description">Salary</span>
-                </div>
-                <div>
-                  <span class="heading">1</span>
-                  <span class="description">Experience</span>
-                </div>
+{% block content %} 
+<div class="col-xl-12 order-xl-1">
+  <div class="card">
+      <div class="card-header">
+          <div class="row align-items-center">
+              <div class="col-8">
+                  <h3 class="mb-0">Add Profile</h3>
               </div>
-            </div>
-          </div>
-          <div class="text-center">
-            <h5 class="h3">
-
-            </h5>
-            <div class="h5 font-weight-300">
-
-            </div>
-            <div class="h5 mt-4">
-              <i class="ni business_briefcase-24 mr-2"></i>Job Role - Department
-            </div>
-            <div>
-              <i class="ni education_hat mr-2"></i>Dairy Manufacturing ERP
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> --> 
-    <div class="col-xl-12 order-xl-1">
-      <div class="card">
-          <div class="card-header">
-              <div class="row align-items-center">
-                  <div class="col-8">
-                      <h3 class="mb-0">Add Profile</h3>
-                  </div>
-                  <div class="col-4 text-right">
-                      <button type="submit" class="btn btn-sm btn-primary">Save</button> <!-- Button to submit the form -->
-                  </div>
+              <div class="col-4 text-right">
+                  <button type="submit" class="btn btn-sm btn-primary">Save</button> <!-- Button to submit the form -->
               </div>
           </div>
-          <div class="card-body">
-              <form method="POST"> <!-- Specify method as POST for form submission -->
-                  {% csrf_token %} <!-- Django CSRF token for security -->
-                  <h6 class="heading-small text-muted mb-4">User information</h6>
-                  <div class="pl-lg-4">
-                      <div class="row">
-                          <div class="col-lg-6">
-                              <div class="form-group">
-                                  <label class="form-control-label" for="id_name">Name</label>
-                                  {{ form.name }} <!-- Render the name field -->
-                              </div>
-                          </div>
-                          <div class="col-lg-6">
-                              <div class="form-group">
-                                  <label class="form-control-label" for="id_email">Email address</label>
-                                  {{ form.email }} <!-- Render the email field -->
-                              </div>
+      </div>
+      <div class="card-body">
+          <form method="POST"> <!-- Specify method as POST for form submission -->
+              {% csrf_token %} <!-- Django CSRF token for security -->
+              <h6 class="heading-small text-muted mb-4">User Information</h6>
+              <div class="pl-lg-4">
+                  <div class="row">
+                      <div class="col-lg-6">
+                          <div class="form-group">
+                              <label class="form-control-label" for="id_name">Name</label>
+                              {{ form.name }} <!-- Render the name field -->
                           </div>
                       </div>
-                      <div class="row">
-                          <div class="col-lg-6">
-                              <div class="form-group">
-                                  <label class="form-control-label" for="id_password">Password</label>
-                                  {{ form.password }} <!-- Render the password field -->
-                              </div>
+                      <div class="col-lg-6">
+                          <div class="form-group">
+                              <label class="form-control-label" for="id_email">Email address</label>
+                              {{ form.email }} <!-- Render the email field -->
                           </div>
-                          <div class="col-lg-6">
-                              <div class="form-group">
-                                  <label class="form-control-label" for="id_department">Department</label>
-                                  {{ form.department }} <!-- Render the department field -->
-                              </div>
-                          </div>
-                      </div>
-                      <div class="row">
-                          <div class="col-lg-6">
-                              <div class="form-group">
-                                  <label class="form-control-label" for="id_role">Role</label>
-                                  {{ form.role }} <!-- Render the role field -->
-                              </div>
-                          </div>
-                          <div class="col-lg-6">
-                              <div class="form-group">
-                                  <label class="form-control-label" for="id_date_of_joining">Date of Joining</label>
-                                  {{ form.date_of_joining }} <!-- Render the date of joining field -->
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <hr class="my-4" />
-                  <!-- Contact information -->
-                  <h6 class="heading-small text-muted mb-4">Contact information</h6>
-                  <div class="pl-lg-4">
-                      <div class="row">
-                          <div class="col-lg-6">
-                              <div class="form-group">
-                                  <label class="form-control-label" for="id_contact_no">Contact Number</label>
-                                  {{ form.contact_no }} <!-- Render the contact number field -->
-                              </div>
-                          </div>
-                          <div class="col-lg-6">
-                              <div class="form-group">
-                                  <label class="form-control-label" for="id_emrg_contact_no">Emergency Contact Number</label>
-                                  {{ form.emrg_contact_no }} <!-- Render the emergency contact number field -->
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <hr class="my-4" />
-                  <!-- About Employee -->
-                  <h6 class="heading-small text-muted mb-4">About Employee</h6>
-                  <div class="pl-lg-4">
-                      <div class="form-group">
-                          <label class="form-control-label">History</label>
-                          {{ form.history }} <!-- Render the history field -->
                       </div>
                   </div>
                   <div class="row">
                       <div class="col-lg-6">
                           <div class="form-group">
-                              <label class="form-control-label" for="id_shift_time">Shift Time</label>
-                              {{ form.shift_time }} <!-- Render the shift time field -->
+                              <label class="form-control-label" for="id_password">Password</label>
+                              {{ form.password }} <!-- Render the password field -->
                           </div>
                       </div>
                       <div class="col-lg-6">
                           <div class="form-group">
-                              <label class="form-control-label" for="id_salary">Salary</label>
-                              {{ form.salary }} <!-- Render the salary field -->
+                              <label class="form-control-label" for="id_designation">Designation</label>
+                              {{ form.designation }} <!-- Render the designation field -->
                           </div>
                       </div>
                   </div>
-                  <button type="submit" class="btn btn-primary">Submit</button> <!-- Button to submit the form -->
-                  {% if success_message %} <!-- Display success message if it exists -->
-                      <div class="alert alert-success mt-3">{{ success_message }}</div>
-                  {% endif %}
-              </form>
-          </div>
+                  <div class="row">
+                      <div class="col-lg-6">
+                          <div class="form-group">
+                              <label class="form-control-label" for="id_role">Role</label>
+                              {{ form.role }} <!-- Render the role field -->
+                          </div>
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="form-group">
+                              <label class="form-control-label" for="id_date_of_joining">Date of Joining</label>
+                              {{ form.date_of_joining }} <!-- Render the date of joining field -->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <hr class="my-4" />
+              <!-- Contact Information -->
+              <h6 class="heading-small text-muted mb-4">Contact Information</h6>
+              <div class="pl-lg-4">
+                  <div class="row">
+                      <div class="col-lg-6">
+                          <div class="form-group">
+                              <label class="form-control-label" for="id_contact_no">Contact Number</label>
+                              {{ form.contact_no }} <!-- Render the contact number field -->
+                          </div>
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="form-group">
+                              <label class="form-control-label" for="id_emrg_contact_no">Emergency Contact Number</label>
+                              {{ form.emrg_contact_no }} <!-- Render the emergency contact number field -->
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <hr class="my-4" />
+              <!-- About Employee -->
+              <h6 class="heading-small text-muted mb-4">About Employee</h6>
+              <div class="pl-lg-4">
+                  <div class="form-group">
+                      <label class="form-control-label">History</label>
+                      {{ form.history }} <!-- Render the history field -->
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-lg-6">
+                      <div class="form-group">
+                          <label class="form-control-label" for="id_shift_time">Shift Time</label>
+                          {{ form.shift_time }} <!-- Render the shift time field -->
+                      </div>
+                  </div>
+                  <div class="col-lg-6">
+                      <div class="form-group">
+                          <label class="form-control-label" for="id_salary">Salary</label>
+                          {{ form.salary }} <!-- Render the salary field -->
+                      </div>
+                  </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button> <!-- Button to submit the form -->
+              {% if success_message %} <!-- Display success message if it exists -->
+                  <div class="alert alert-success mt-3">{{ success_message }}</div>
+              {% endif %}
+          </form>
       </div>
-  </div>  
-  
-  {% include "includes/footer.html" %}
-
+  </div>
 </div>
+
+  {% include "includes/footer.html" %}
 
 {% endblock content %}
 

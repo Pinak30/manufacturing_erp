@@ -32,7 +32,7 @@ class RawMaterial(Document):
 
 
 class InventoryRawMaterial(Document):
-    inventory_id = StringField(primary_key=True, max_length=100)  # Primary Key
+    inventory_id = IntField(primary_key=True, max_length=100)  # Primary Key
     raw_material_id = ReferenceField(RawMaterial, reverse_delete_rule=4)  # Foreign Key
     quantity_in_stock = IntField(required=True)
     location = StringField()
