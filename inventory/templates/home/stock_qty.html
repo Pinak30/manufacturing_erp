@@ -48,22 +48,22 @@
                   <tbody class="list">
                     {% with i=1 %}
                     {% for fprod in products %}
-                    <tr>
+                      <tr>
                         <td class="badge badge-dot mr-4">
-                            {{ i }}
+                          {{ i }}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ fprod.product_name }}
+                          {{ fprod.sku_id.sku_name }}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ fprod.quantity }}
+                          {{ fprod.quantity }}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ fprod.expiry_date }}
+                          {{ fprod.expiry_date }}
                         </td>
-                    </tr>
-                      {% with i=i|add:1 %}{% endwith %}
-                      {% endfor %}
+                      </tr>
+                          {% with i=i|add:1 %}{% endwith %}
+                    {% endfor %}
                     {% endwith %}
                   </tbody>
                 </table>
