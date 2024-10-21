@@ -12,103 +12,174 @@
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
               <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                 <li class="breadcrumb-item"><a href="{% url 'inventory' %}"><i class="fas fa-home"></i></a></li>
-                <!-- <li class="breadcrumb-item"><a href="#">Employee List</a></li> -->
-                <li class="breadcrumb-item active" style="color: #8898aa; font-size:x-small"><a href="{% url 'stock_coverage' %}">Raw Materials & Ready Products</a></li>
-                <!-- <li class="breadcrumb-item" style="font-size:x-small"><a href="{% url 'stock_qty_raw' %}">Availability of product - Monthly Requirement</li> -->
+                <li class="breadcrumb-item active" style="color: #8898aa; font-size:x-small">
+                  <a href="#" id="rawMaterialsLink">Raw Materials</a>
+                </li>
+                <li class="breadcrumb-item" style="color: #8898aa; font-size:x-small">
+                  <a href="#" id="readyProductsLink">Ready Products</a>
+                </li>
+                <li class="breadcrumb-item" style="font-size:x-small">
+                  <a href="#" id="availabilityLink">Availability of product - Monthly Requirement</a>
+                </li>
               </ol>
             </nav>
           </div>
-          <!-- <div class="col-lg-6 col-5 text-right">
-            <a href="#" class="btn btn-sm btn-neutral">Filters</a>
-          </div> -->
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- Page content -->
+
+  <!-- Tables -->
   <div class="container-fluid mt--6">
-        <!-- Dark table -->
-        <div class="row">
-          <div class="col">
-            <div class="card bg-default shadow">
-              <div class="card-header bg-transparent border-0">
-                <h3 class="text-white mb-0">Raw Materials & Ready Products</h3>
-              </div>
-              <div class="table-responsive">
-                <table class="table align-items-center table-dark table-flush">
-                  <thead class="thead-dark">
-                    <tr>
-                      <th scope="col" class="sort" data-sort="id">Sr No.</th>
-                      <th scope="col" class="sort" data-sort="product_name">Product/Material Name</th>
-                      <th scope="col" class="sort" data-sort="life_span">Total Life Span</th>
-                      <th scope="col" class="sort" data-sort="remaining_life">Remaining life</th>
-                      <th scope="col" class="sort" data-sort="expiry_date">Expiry Date</th>
-                    </tr>
-                  </thead>
-                  <tbody class="list">
-                    {% with i=1 %}
-                    {% for prod in products %}
-                    <tr>
-                        <td class="badge badge-dot mr-4">
-                            {{ i }}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                            {{ prod.product_name }}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                            {{ prod.life_span }}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                            {{ prod.remaining_life }}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                            {{ prod.expiry_date }}
-                        </td>
-                    </tr>
-                      {% with i=i|add:1 %}{% endwith %}
-                      {% endfor %}
-                    {% endwith %}
-                  </tbody>
-                </table>
-              </div>
+    <div class="row">
+      <div class="col">
+        <!-- Table for Raw Materials & Ready Products -->
+        <div id="productTable">
+          <div class="card bg-default shadow">
+            <div class="card-header bg-transparent border-0">
+              <h3 id="tableTitle" class="text-white mb-0">Raw Materials</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-dark table-flush">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="sort" data-sort="id">Sr No.</th>
+                    <th scope="col" class="sort" data-sort="product_name">Product/Material Name</th>
+                    <th scope="col" class="sort" data-sort="life_span">Total Life Span</th>
+                    <th scope="col" class="sort" data-sort="remaining_life">Remaining Life</th>
+                    <th scope="col" class="sort" data-sort="expiry_date">Expiry Date</th>
+                  </tr>
+                </thead>
+                <tbody class="list">
+                  {% with i=1 %}
+                  <!-- Raw Material Data -->
+                  {% for material in materials %}
+                  <tr>
+                    <td>{{ i }}</td>
+                    <td>{{ material.raw_material_id.raw_material_name }}</td>
+                    <td>{{ material.raw_material_id.raw_material_life_span }} {{ material.raw_material_id.raw_material_life_span_measure }}</td>
+                    <td>{{ material.remaining_life }} days</td>
+                    <td>{{ material.expiry_date }}</td>
+                  </tr>
+                  {% with i=i|add:1 %}{% endwith %}
+                  {% endfor %}
+                  
+                  <!-- Ready Products Data (hidden by default) -->
+                  {% for prod in products %}
+                  <tr>
+                    <td>{{ i }}</td>
+                    <td>{{ prod.sku_id.sku_name }}</td>
+                    <td> NA </td>
+                    <td>{{ prod.remaining_life }} days</td>
+                    <td>{{ prod.expiry_date }}</td>
+                  </tr>
+                  {% with i=i|add:1 %}{% endwith %}
+                  {% endfor %}
+                  {% endwith %}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-          <div class="card-footer py-4">
-            <nav aria-label="...">
-              <ul class="pagination justify-content-end mb-0">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1">
-                    <i class="fas fa-angle-left"></i>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#">
-                    <i class="fas fa-angle-right"></i>
-                    <span class="sr-only">Next</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+
+        <!-- Table 2: Availability of product - Monthly Requirement -->
+        <div id="availabilityTable" style="display: none;">
+          <div class="card bg-default shadow">
+            <div class="card-header bg-transparent border-0">
+              <h3 class="text-white mb-0">Availability of Product - Monthly Requirement</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-dark table-flush">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="sort" data-sort="id">Sr No.</th>
+                    <th scope="col" class="sort" data-sort="product_name">Product Name</th>
+                    <th scope="col" class="sort" data-sort="required_qty">Net Quantity</th>
+                    <th scope="col" class="sort" data-sort="available_qty">Available Quantity</th>
+                    <!-- <th scope="col" class="sort" data-sort="monthly_req">Monthly Requirement</th> -->
+                  </tr>
+                </thead>
+                <tbody class="list">
+                  {% with i=1 %}
+                  {% for prod in products %}
+                  <tr>
+                    <td>{{ i }}</td>
+                    <td>{{ prod.sku_id.sku_name }}</td>
+                    <td>{{ prod.sku_id.net_qty }}</td>
+                    <td>{{ prod.quantity }}</td>
+                    <!-- <td>{{ prod.monthly_req }}</td> -->
+                  </tr>
+                  {% with i=i|add:1 %}{% endwith %}
+                  {% endfor %}
+                  {% endwith %}
+                </tbody>
+              </table>
+            </div>
           </div>
+        </div>
+        
+        <!-- Pagination (optional) -->
+        <div class="card-footer py-4">
+          <nav aria-label="...">
+            <ul class="pagination justify-content-end mb-0">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">
+                  <i class="fas fa-angle-left"></i>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">
+                  <i class="fas fa-angle-right"></i>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
-
-    {% include "includes/footer.html" %}
-
   </div>
 
+  {% include "includes/footer.html" %}
 {% endblock content %}
 
 <!-- Specific JS goes HERE --> 
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script>
+  const rawMaterialsLink = document.getElementById('rawMaterialsLink');
+  const readyProductsLink = document.getElementById('readyProductsLink');
+  const availabilityLink = document.getElementById('availabilityLink');
+  const productTable = document.getElementById('productTable');
+  const availabilityTable = document.getElementById('availabilityTable');
+  const tableTitle = document.getElementById('tableTitle');
+
+  // Switch between tables and update headers
+  rawMaterialsLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    productTable.style.display = 'block';
+    availabilityTable.style.display = 'none';
+    tableTitle.textContent = 'Raw Materials';
+  });
+
+  readyProductsLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    productTable.style.display = 'block';
+    availabilityTable.style.display = 'none';
+    tableTitle.textContent = 'Ready Products';
+  });
+
+  availabilityLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    productTable.style.display = 'none';
+    availabilityTable.style.display = 'block';
+  });
+</script>
+{% endblock javascripts %}

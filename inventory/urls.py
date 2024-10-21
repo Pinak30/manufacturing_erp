@@ -11,8 +11,8 @@ urlpatterns = [
     path('all_product/', all_product_list, name='all_product_list'),
     path('inventory_value/', inventory_value, name='inventory_value'),
     path('inventory_transaction/', inventory_transaction_summary, name='inventory_transaction_summary'),
-    path('stoke_movement_analysis/', stoke_movement_analysis, name='stoke_movement_analysis'),
-    path('open_purchase_orders/', open_purchase_orders, name='open_purchase_orders'),
-    path('cycle_count/', cycle_count_stock_audit, name='cycle_count_stock_audit'),
-    path('historic_trend_analysis/', historic_trend_analysis, name='historic_trend_analysis'),
+    # path('stoke_movement_analysis/', stoke_movement_analysis, name='stoke_movement_analysis'),
+    # path('open_purchase_orders/', open_purchase_orders, name='open_purchase_orders'),
+    # path('cycle_count/', cycle_count_stock_audit, name='cycle_count_stock_audit'),
+    # path('historic_trend_analysis/', historic_trend_analysis, name='historic_trend_analysis'),
 ]
