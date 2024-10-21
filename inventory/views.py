@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import *
 
 # Create your views here.
 def inventory(request):
@@ -8,11 +9,13 @@ def inventory(request):
     return render(request, 'home/inventory.html',context)
 
 def stock_qty(request):
-        context = {
+    products = ProductInventory.objects.all()
+    # print(products)
+    context = {
         'app_name': 'Inventory',
+        'products': products,
     }
-        # fetch only finished products and send via dictionary give name>> products
-        return render(request, 'home/stock_qty.html',context)
+    return render(request, 'home/stock_qty.html',context)
 
 def stock_qty_raw(request):
         context = {
