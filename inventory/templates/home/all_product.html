@@ -39,29 +39,33 @@
                     <tr>
                       <th scope="col" class="sort" data-sort="id">Sr No.</th>
                       <th scope="col" class="sort" data-sort="product_name">Product Name</th>
-                      <th scope="col" class="sort" data-sort="status">Status</th>
-                      <th scope="col" class="sort" data-sort="desc">Description</th>
-                      <th scope="col" class="sort" data-sort="quantity">Quantity Availabe</th>
+                      <th scope="col" class="sort" data-sort="active">Status</th>
+                      <!-- <th scope="col" class="sort" data-sort="desc">Description</th> -->
+                      <th scope="col" class="sort" data-sort="net_qty">Net Quantity</th>
                     </tr>
                   </thead>
                   <tbody class="list">
                     {% with i=1 %}
-                    {% for prod in products %}
+                    {% for prod in sku %}
                     <tr>
                         <td class="badge badge-dot mr-4">
                             {{ i }}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ prod.product }}
+                            {{ prod.sku_name }}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ prod.status }}
+                          {% if prod.active == 2 %}
+                              <span class="badge badge-success">Active</span>
+                          {% else %}
+                              <span class="badge badge-danger">Inactive</span>
+                          {% endif %}
                         </td>
-                        <td class="badge badge-dot mr-4">
+                        <!-- <td class="badge badge-dot mr-4">
                             {{ prod.description }}
-                        </td>
+                        </td> -->
                         <td class="badge badge-dot mr-4">
-                            {{ prod.quantity }}
+                            {{ prod.net_qty }}
                         </td>
                     </tr>
                       {% with i=i|add:1 %}{% endwith %}

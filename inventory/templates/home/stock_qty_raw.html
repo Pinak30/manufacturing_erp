@@ -42,7 +42,7 @@
                       <th scope="col" class="sort" data-sort="id">Sr No.</th>
                       <th scope="col" class="sort" data-sort="product_name">Product Name</th>
                       <th scope="col" class="sort" data-sort="quantity">Quantity</th>
-                      <th scope="col" class="sort" data-sort="expiry_date">Expiry Date</th>
+                      <!-- <th scope="col" class="sort" data-sort="expiry_date">Manufacturing Date</th> -->
                     </tr>
                   </thead>
                   <tbody class="list">
@@ -53,13 +53,10 @@
                             {{ i }}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ rprod.product_name }}
+                            {{ rprod.raw_material_id.raw_material_name }}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ rprod.quantity }}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                            {{ rprod.expiry_date }}
+                            {{ rprod.quantity_in_stock }}
                         </td>
                     </tr>
                       {% with i=i|add:1 %}{% endwith %}

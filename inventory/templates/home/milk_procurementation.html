@@ -37,36 +37,27 @@
                 <table class="table align-items-center table-dark table-flush">
                   <thead class="thead-dark">
                     <tr>
-                      <th scope="col" class="sort" data-sort="id">Sr No.</th>
-                      <th scope="col" class="sort" data-sort="product_name">Milk ID</th>
-                      <th scope="col" class="sort" data-sort="life_span">Date of Purchase</th>
-                      <th scope="col" class="sort" data-sort="expiry_date">Expiry Date</th>
+                      <!-- <th scope="col" class="sort" data-sort="id">Sr No.</th> -->
+                      <th scope="col" class="sort" data-sort="order_date">Order Date</th>
+                      <th scope="col" class="sort" data-sort="item">Item</th>
+                      <th scope="col" class="sort" data-sort="quantity">Quantity</th>
                       <!-- <th scope="col" class="sort" data-sort="tank_no">Tank No.</th> -->
                     </tr>
                   </thead>
                   <tbody class="list">
-                    {% with i=1 %}
-                    {% for m in milk %}
+                    {% for item in milk %}
                     <tr>
                         <td class="badge badge-dot mr-4">
-                            {{ i }}
+                          {{ item.purchase_order_id.order_date }}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ m.milk_id }}
+                          {{ item.raw_material_id.raw_material_name }}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ m.date }}
+                          {{ item.quantity }}
                         </td>
-                        <td class="badge badge-dot mr-4">
-                            {{ m.expiry_date }}
-                        </td>
-                        <!-- <td class="badge badge-dot mr-4">
-                            {{ m.tank_no }}
-                        </td> -->
                     </tr>
-                      {% with i=i|add:1 %}{% endwith %}
-                      {% endfor %}
-                    {% endwith %}
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>
