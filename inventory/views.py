@@ -33,6 +33,7 @@ def stock_qty_raw(request):
 def stock_coverage(request):
     products = ProductInventory.objects.all()
     materials = InventoryRawMaterial.objects.all()
+
     for product in products:
         if product.expiry_date:
             # Calculate remaining days from expiry_date
@@ -42,22 +43,45 @@ def stock_coverage(request):
 
     material_list = []
     for material in materials:
-        raw_material = RawMaterial.objects.get(sku_id=material.sku_id)  # Get the corresponding raw material's life span
-        manufacturing_date = material.manufacturing_date  # Calculate the time passed since the manufacturing date
-        time_passed = (timezone.now() - manufacturing_date).days
-        # Calculate the remaining life
-        remaining_life = raw_material.life_span - time_passed
-        if remaining_life < 0:
-            remaining_life = 0  # if expired
-        # Calculate the expiry date
-        expiry_date = manufacturing_date + timedelta(days=raw_material.life_span)
-        # Append the data to the list with calculated fields
-        material_list.append({
-            'product_name': material.product_name,  # or adjust based on how you name it in your model
-            'life_span': raw_material.life_span,
-            'remaining_life': remaining_life,
-            'expiry_date': expiry_date
-        })
+        if material.raw_material_id:
+            raw_material = RawMaterial.objects.get(raw_material_id=material.raw_material_id.raw_material_id)  # Get the corresponding raw material's life span
+            manufacturing_date = material.manufacturing_date  # Calculate the time passed since the manufacturing date
+
+            if manufacturing_date:
+                time_passed = (timezone.now().date() - manufacturing_date).days
+
+                # Check if raw_material_life_span is not None
+                if raw_material.raw_material_life_span is not None:
+                    remaining_life = raw_material.raw_material_life_span - time_passed
+                else:
+                    remaining_life = None  # Set to None if life span is not available
+
+                if remaining_life is not None and remaining_life < 0:
+                    remaining_life = 0  # if expired
+                
+                # Calculate the expiry date
+                expiry_date = manufacturing_date + timedelta(days=raw_material.raw_material_life_span) if raw_material.raw_material_life_span is not None else None
+
+            else:
+                remaining_life = None  # Set to None if no manufacturing date
+                expiry_date = None
+            
+            # Append the data to the list with calculated fields
+            material_list.append({
+                'product_name': raw_material.raw_material_name if raw_material else 'Unknown',
+                'life_span': raw_material.raw_material_life_span if raw_material else 'N/A',
+                'remaining_life': remaining_life,
+                'expiry_date': expiry_date,
+            })
+        else:
+            # Handle cases where raw_material_id is None
+            material_list.append({
+                'product_name': 'Unknown',
+                'life_span': 'N/A',
+                'remaining_life': None,  # Set to None
+                'expiry_date': None,
+            })
+
     context = {
         'app_name': 'Inventory',
         'products': products,
