@@ -27,7 +27,7 @@ class Employee(Document):
 
 
 class Payroll(Document):
-    payroll_id = StringField(primary_key=True, max_length=100)
+    payroll_id = IntField(primary_key=True, max_length=100)
     salary = DecimalField(required=True, precision=2) 
     bonus = DecimalField(precision=2) 
 
@@ -38,4 +38,4 @@ class SalaryAttendance(Document):
     payroll_id = ReferenceField(Payroll, reverse_delete_rule=4)    # FK to Payroll
     attendance_date = DateField(required=True)
     leave_balance = IntField(default=0)  # Optional, can default to 0
-    net_salary = DecimalField(precision=2, required=True) 
+    net_salary = DecimalField(precision=2, required=False) 

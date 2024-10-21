@@ -57,21 +57,21 @@
                             <!-- <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Ryan Tompson">
                               <img alt="Image placeholder" src="/static/assets/img/theme/team-1.jpg">
                             </a> -->
-                            <span class="name mb-0 text-sm">{{ employee.name }}</span>
+                            <span class="name mb-0 text-sm">{{ employee.employee_name }}</span>
                           </div>
                         </div>
                       </th>
                       <td class="email">
-                        {{ employee.email }}
+                        {{ employee.email_id }}
                       </td>
                       <td>
                         <span class="badge badge-dot mr-4">
                           <!-- <i class="bg-warning"></i> -->
-                          <span class="department">{{ employee.department }}</span>
+                          <span class="department">{{ employee.designation_id.designation_name }}</span>
                         </span>
                       </td>
                       <td class="contact_no">
-                        {{ employee.contact_no }}
+                        {{ employee.contact_info }}
                       </td>
                       <!-- <td>
                         <div class="d-flex align-items-center">
