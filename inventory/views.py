@@ -67,13 +67,14 @@ def stock_coverage(request):
     return render(request, 'home/stock_cvg.html', context)
 
 
-def milk_procurementation(request):
-    milk = PurchaseOrderItem.objects.filter(raw_material_id__raw_material_name="milk").select_related('purchase_order_id')
-    context = {
-        'app_name': 'Inventory',
-        'milk':milk
-    }
-    return render(request, 'home/milk_procurementation.html',context)
+# def milk_procurementation(request):
+#     milk = PurchaseOrderItem.objects.all()
+#     # milk = PurchaseOrderItem.objects.filter(raw_material_id__raw_material_name="milk")
+#     context = {
+#         'app_name': 'Inventory',
+#         'milk':milk
+#     }
+#     return render(request, 'home/milk_procurementation.html',context)
 
 def active_sku(request):
     sku = Sku.objects.filter(active=2)
