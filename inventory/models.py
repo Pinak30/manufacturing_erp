@@ -9,7 +9,7 @@ class Material(Document):
     life_span_measure = StringField()
 
 
-class SKU(Document):
+class Sku(Document):
     sku_id = IntField(primary_key=True)  
     sku_name = StringField(required=True)
     material_type = StringField()
@@ -41,13 +41,13 @@ class InventoryRawMaterial(Document):
 
 
 class PurchaseOrder(Document):
-    purchase_order_id = StringField(primary_key=True, max_length=100)  # Primary Key
+    purchase_order_id = IntField(primary_key=True, max_length=100)  # Primary Key
     supplier_id = IntField() 
     order_date = DateField()
 
 
 class PurchaseOrderItem(Document):
-    purchase_order_item_id = StringField(primary_key=True, max_length=100)  # Primary Key
+    purchase_order_item_id = IntField(primary_key=True, max_length=100)  # Primary Key
     purchase_order_id = ReferenceField(PurchaseOrder, reverse_delete_rule=4)  # Foreign Key
     raw_material_id = ReferenceField(RawMaterial, reverse_delete_rule=4)  # Foreign Key
     quantity = IntField(required=True)
@@ -57,7 +57,7 @@ class PurchaseOrderItem(Document):
 class ProductionBatch(Document):
     batch_id = IntField(primary_key=True, max_length=100)  # Primary Key
     batch_date = DateField(required=True)
-    sku_id = ReferenceField(SKU, reverse_delete_rule=4)  # Foreign Key
+    sku_id = ReferenceField(Sku, reverse_delete_rule=4)  # Foreign Key
     quantity_produced = IntField(required=True)
 
 
@@ -70,7 +70,7 @@ class BatchIngredient(Document):
 
 class ProductInventory(Document):
     product_inventory_id = IntField(primary_key=True, max_length=100)  # Primary Key
-    sku_id = ReferenceField(SKU, reverse_delete_rule=4)  # Foreign Key
+    sku_id = ReferenceField(Sku, reverse_delete_rule=4)  # Foreign Key
     quantity = IntField(required=True)
     location = StringField()
     manufacturing_date = DateField()

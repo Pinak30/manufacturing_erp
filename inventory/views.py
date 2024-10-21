@@ -8,14 +8,16 @@ def inventory(request):
     }
     return render(request, 'home/inventory.html',context)
 
+from inventory.models import ProductInventory
+
 def stock_qty(request):
-    products = ProductInventory.objects.all()
-    # print(products)
+    products = ProductInventory.objects.all()  # Fetch all product inventories
     context = {
         'app_name': 'Inventory',
         'products': products,
     }
-    return render(request, 'home/stock_qty.html',context)
+    return render(request, 'home/stock_qty.html', context)
+
 
 def stock_qty_raw(request):
         context = {

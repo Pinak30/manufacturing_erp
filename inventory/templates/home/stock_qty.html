@@ -48,24 +48,24 @@
                   <tbody class="list">
                     {% with i=1 %}
                     {% for fprod in products %}
-                      <tr>
-                        <td class="badge badge-dot mr-4">
-                          {{ i }}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                          {{ fprod.sku_id.sku_name }}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                          {{ fprod.quantity }}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                          {{ fprod.expiry_date }}
-                        </td>
-                      </tr>
-                          {% with i=i|add:1 %}{% endwith %}
+                        <tr>
+                            <td class="badge badge-dot mr-4">
+                                {{ i }}
+                            </td>
+                            <td class="badge badge-dot mr-4">
+                                {{ fprod.sku_id.sku_name }}  <!-- Accessing SKU name from the reference -->
+                            </td>
+                            <td class="badge badge-dot mr-4">
+                                {{ fprod.quantity }}
+                            </td>
+                            <td class="badge badge-dot mr-4">
+                                {{ fprod.expiry_date }}
+                            </td>
+                        </tr>
+                        {% with i=i|add:1 %}{% endwith %}
                     {% endfor %}
                     {% endwith %}
-                  </tbody>
+                </tbody>                
                 </table>
               </div>
             </div>
