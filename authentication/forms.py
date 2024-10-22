@@ -7,7 +7,7 @@ from .models import *
 
 
 class LoginForm(forms.Form):
-    email = forms.CharField(
+    email_id = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Email",
@@ -26,9 +26,9 @@ class SignUpForm(forms.Form):
     DESIGNATION_CHOICES = [(des.designation_id, des.designation_name) for des in Designation.objects.all()]
     ROLE_CHOICES = [
         ('HR', 'HR'),
-        ('Inventory', 'Inventory'),
-        ('Production', 'Production'),
-        ('Finance', 'Finance'),
+        ('inventory', 'inventory'),
+        ('production', 'production'),
+        ('finance', 'finance'),
     ]
 
     contact_number_validator = RegexValidator(r'^\d{10,15}$', 'Contact number must be between 10 to 15 digits.')
@@ -37,8 +37,8 @@ class SignUpForm(forms.Form):
     salary_attendance_id = forms.CharField(max_length=100)
     contact_no = forms.CharField(validators=[contact_number_validator], max_length=15)
     emrg_contact_no = forms.CharField(validators=[contact_number_validator], max_length=15)
-    name = forms.CharField(max_length=255)
-    email = forms.EmailField()
+    employee_name = forms.CharField(max_length=255)
+    email_id = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput(), max_length=255)
     designation = forms.ChoiceField(choices=DESIGNATION_CHOICES)
     role = forms.ChoiceField(choices=ROLE_CHOICES)
@@ -52,8 +52,8 @@ class SignUpForm(forms.Form):
 
         employee = Employee(
             employee_id=self.cleaned_data['employee_id'],
-            email_id=self.cleaned_data['email'],
-            employee_name=self.cleaned_data['name'],
+            email_id=self.cleaned_data['email_id'],
+            employee_name=self.cleaned_data['employee_name'],
             designation_id=designation,  # Reference the selected designation object
             contact_info=self.cleaned_data['contact_no'],
             emergency_contact=self.cleaned_data['emrg_contact_no'],
