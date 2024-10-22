@@ -39,30 +39,33 @@
                     <tr>
                       <th scope="col" class="sort" data-sort="id">Sr No.</th>
                       <th scope="col" class="sort" data-sort="product_name">Finished Product Name</th>
+                      <th scope="col" class="sort" data-sort="net_qty">Net Quantity</th>
+                      <th scope="col" class="sort" data-sort="material_type">Material Type</th>
+                      <th scope="col" class="sort" data-sort="unit_price">Unit Price</th>
                       <!-- <th scope="col" class="sort" data-sort="manf_date">Date of Manufacturing</th>
                       <th scope="col" class="sort" data-sort="quantity">Quantity Availabe</th> -->
                     </tr>
                   </thead>
                   <tbody class="list">
-                    {% with i=1 %}
-                    {% for prod in products %}
+                    {% for prod in sku %}
                     <tr>
                         <td class="badge badge-dot mr-4">
-                            {{ i }}
+                            {{forloop.counter}}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ prod.product }}
-                        </td>
-                        <!-- <td class="badge badge-dot mr-4">
-                            {{ prod.manf_date }}
+                            {{ prod.sku_name }}
                         </td>
                         <td class="badge badge-dot mr-4">
-                            {{ prod.quantity }}
-                        </td> -->
+                            {{ prod.net_qty }}
+                        </td>
+                        <td class="badge badge-dot mr-4">
+                            {{ prod.material_type }}
+                        </td>
+                        <td class="badge badge-dot mr-4">
+                            {{ prod.unit_price }}
+                        </td>
                     </tr>
-                      {% with i=i|add:1 %}{% endwith %}
                       {% endfor %}
-                    {% endwith %}
                   </tbody>
                 </table>
               </div>
