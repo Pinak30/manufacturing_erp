@@ -32,7 +32,7 @@ class PlanProduction(Document):
     status = IntField() 
 
 
-class ProductionBatch(Document):
+class ProductionBatchProd(Document):
     batch_id = IntField(primary_key=True, max_length=100)  # Primary Key
     production_order_id = ReferenceField(ProductionOrder, reverse_delete_rule=4)  # Foreign Key
     batch_date = DateField(required=True) 

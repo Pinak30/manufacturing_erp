@@ -1,5 +1,5 @@
-from mongoengine import Document, StringField, DateField, FloatField, ReferenceField, IntField
-from inventory.models import PurchaseOrder, RawMaterial
+from mongoengine import Document, StringField, DateField, FloatField, ReferenceField, IntField, ListField
+from inventory.models import RawMaterial
 
 
 class GeneralLedger(Document):
@@ -10,14 +10,14 @@ class GeneralLedger(Document):
 
 
 class Account(Document):
-    account_id = StringField(primary_key=True, max_length=100)
+    account_id = IntField(primary_key=True, max_length=100)
     account_name = StringField(required=True, max_length=255)
     account_type = StringField(required=True)
     balance = FloatField(required=True)
 
 
 class Customer(Document):
-    customer_id = StringField(primary_key=True, max_length=100)
+    customer_id = IntField(primary_key=True, max_length=100)
     customer_name = StringField(required=True, max_length=255)
     customer_email = StringField(required=True, max_length=100)
     customer_phone = StringField(required=True, max_length=15)
@@ -37,11 +37,27 @@ class Payment(Document):
     invoice_id = ReferenceField(Invoice, reverse_delete_rule=4)  # Foreign key to Invoice
 
 
+class Supplier(Document):
+    supplier_id = IntField(primary_key=True, max_length=100)
+    supplier_name = StringField(required=True, max_length=255)
+    supplier_contact = StringField(required=True, max_length=15)
+    raw_material_id = ListField(ReferenceField(RawMaterial, reverse_delete_rule=4))
+    description = StringField(max_length=255)
+
+
+class PurchaseOrderFinance(Document):
+    purchase_order_id = IntField(primary_key=True, max_length=100)
+    order_date = DateField(required=True)
+    supplier_id = ReferenceField(Supplier, reverse_delete_rule=4)  # Foreign key to Supplier
+    total_amount = FloatField(required=True)
+    expected_delivery_date = DateField()
+
+
 class Expense(Document):
     expense_id = StringField(primary_key=True, max_length=100)
     expense_type = StringField(required=True, max_length=100)
     amount = FloatField(required=True)
-    purchase_order_id = ReferenceField(PurchaseOrder, reverse_delete_rule=4)  # Foreign key to Purchase Order
+    purchase_order_id = ReferenceField(PurchaseOrderFinance, reverse_delete_rule=4)  # Foreign key to Purchase Order
 
 
 class Transaction(Document):
@@ -54,22 +70,6 @@ class Transaction(Document):
     expense_id = ReferenceField(Expense, reverse_delete_rule=4)  # Foreign key to Exxpense
 
 
-class Supplier(Document):
-    supplier_id = StringField(primary_key=True, max_length=100)
-    supplier_name = StringField(required=True, max_length=255)
-    supplier_contact = StringField(required=True, max_length=15)
-    raw_material_id = ReferenceField(RawMaterial, reverse_delete_rule=4)
-    description = StringField(max_length=255)
-
-
-class PurchaseOrder(Document):
-    purchase_order_id = StringField(primary_key=True, max_length=100)
-    order_date = DateField(required=True)
-    supplier_id = ReferenceField(Supplier, reverse_delete_rule=4)  # Foreign key to Supplier
-    total_amount = FloatField(required=True)
-    expected_delivery_date = DateField()
-
-
 class Budget(Document):
     budget_id = StringField(primary_key=True, max_length=100)
     year = IntField(required=True)
@@ -77,8 +77,3 @@ class Budget(Document):
     allocated_amount = FloatField(required=True)
 
 
-class FinancialReport(Document):
-    report_id = StringField(primary_key=True, max_length=100)
-    report_name = StringField(required=True, max_length=255)
-    report_date = DateField(required=True)
-    generated_by = StringField(required=True, max_length=255)
