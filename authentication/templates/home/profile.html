@@ -4,115 +4,118 @@
 
 {% block content %} 
 <div class="col-xl-12 order-xl-1">
-  <div class="card">
-      <div class="card-header">
-          <div class="row align-items-center">
-              <div class="col-8">
-                  <h3 class="mb-0">Add Profile</h3>
-              </div>
-              <div class="col-4 text-right">
-                  <button type="submit" class="btn btn-sm btn-primary">Save</button> <!-- Button to submit the form -->
-              </div>
-          </div>
-      </div>
-      <div class="card-body">
-          <form method="POST"> <!-- Specify method as POST for form submission -->
-              {% csrf_token %} <!-- Django CSRF token for security -->
-              <h6 class="heading-small text-muted mb-4">User Information</h6>
-              <div class="pl-lg-4">
-                  <div class="row">
-                      <div class="col-lg-6">
-                          <div class="form-group">
-                              <label class="form-control-label" for="id_name">Name</label>
-                              {{ form.employee_name }} <!-- Render the name field -->
-                          </div>
-                      </div>
-                      <div class="col-lg-6">
-                          <div class="form-group">
-                              <label class="form-control-label" for="id_email">Email address</label>
-                              {{ form.email_id }} <!-- Render the email field -->
-                          </div>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-lg-6">
-                          <div class="form-group">
-                              <label class="form-control-label" for="id_password">Password</label>
-                              {{ form.password }} <!-- Render the password field -->
-                          </div>
-                      </div>
-                      <div class="col-lg-6">
-                          <div class="form-group">
-                              <label class="form-control-label" for="id_designation">Designation</label>
-                              {{ form.designation }} <!-- Render the designation field -->
-                          </div>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-lg-6">
-                          <div class="form-group">
-                              <label class="form-control-label" for="id_role">Role</label>
-                              {{ form.role }} <!-- Render the role field -->
-                          </div>
-                      </div>
-                      <div class="col-lg-6">
-                          <div class="form-group">
-                              <label class="form-control-label" for="id_date_of_joining">Date of Joining</label>
-                              {{ form.date_of_joining }} <!-- Render the date of joining field -->
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <hr class="my-4" />
-              <!-- Contact Information -->
-              <h6 class="heading-small text-muted mb-4">Contact Information</h6>
-              <div class="pl-lg-4">
-                  <div class="row">
-                      <div class="col-lg-6">
-                          <div class="form-group">
-                              <label class="form-control-label" for="id_contact_no">Contact Number</label>
-                              {{ form.contact_no }} <!-- Render the contact number field -->
-                          </div>
-                      </div>
-                      <div class="col-lg-6">
-                          <div class="form-group">
-                              <label class="form-control-label" for="id_emrg_contact_no">Emergency Contact Number</label>
-                              {{ form.emrg_contact_no }} <!-- Render the emergency contact number field -->
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <hr class="my-4" />
-              <!-- About Employee -->
-              <h6 class="heading-small text-muted mb-4">About Employee</h6>
-              <div class="pl-lg-4">
-                  <div class="form-group">
-                      <label class="form-control-label">History</label>
-                      {{ form.history }} <!-- Render the history field -->
-                  </div>
-              </div>
-              <div class="row">
-                  <div class="col-lg-6">
-                      <div class="form-group">
-                          <label class="form-control-label" for="id_shift_time">Shift Time</label>
-                          {{ form.shift_time }} <!-- Render the shift time field -->
-                      </div>
-                  </div>
-                  <div class="col-lg-6">
-                      <div class="form-group">
-                          <label class="form-control-label" for="id_salary">Salary</label>
-                          {{ form.salary }} <!-- Render the salary field -->
-                      </div>
-                  </div>
-              </div>
-              <button type="submit" class="btn btn-primary">Submit</button> <!-- Button to submit the form -->
-              {% if success_message %} <!-- Display success message if it exists -->
-                  <div class="alert alert-success mt-3">{{ success_message }}</div>
-              {% endif %}
-          </form>
-      </div>
-  </div>
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="mb-0">Add Profile</h3>
+                </div>
+                <!-- <div class="col-4 text-right">
+                    <button type="submit" class="btn btn-sm btn-primary">Save</button> <!-- Button to submit the form -->
+                <!-- </div> --> 
+            </div>
+        </div>
+        <div class="card-body">
+            <form method="POST"> <!-- Specify method as POST for form submission -->
+                {% csrf_token %} <!-- Django CSRF token for security -->
+                <h6 class="heading-small text-muted mb-4">User Information</h6>
+                <div class="pl-lg-4">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="id_employee_id">Employee ID</label>
+                                {{ form.employee_id }} <!-- Render the name field -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="id_employee_name">Name</label>
+                                {{ form.employee_name }} <!-- Render the name field -->
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="id_email_id">Email address</label>
+                                {{ form.email_id }} <!-- Render the email field -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="id_password">Password</label>
+                                {{ form.password }} <!-- Render the password field -->
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="id_designation">Designation</label>
+                                {{ form.designation }} <!-- Render the designation field -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="id_role">Role</label>
+                                {{ form.role }} <!-- Render the role field -->
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="id_date_of_joining">Date of Joining</label>
+                                {{ form.date_of_joining }} <!-- Render the date of joining field -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <!-- Contact Information -->
+                <h6 class="heading-small text-muted mb-4">Contact Information</h6>
+                <div class="pl-lg-4">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="id_contact_info">Contact Number</label>
+                                {{ form.contact_info }} <!-- Render the contact number field -->
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="form-control-label" for="id_emergency_contact">Emergency Contact Number</label>
+                                {{ form.emergency_contact }} <!-- Render the emergency contact number field -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+                <!-- About Employee -->
+                <h6 class="heading-small text-muted mb-4">About Employee</h6>
+                <div class="pl-lg-4">
+                    <div class="form-group">
+                        <label class="form-control-label">History</label>
+                        {{ form.work_history }} <!-- Render the history field -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-control-label" for="id_shift_timings">Shift Time</label>
+                            {{ form.shift_timings }} <!-- Render the shift time field -->
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button> <!-- Button to submit the form -->
+                {% if success_message %} <!-- Display success message if it exists -->
+                    <div class="alert alert-success mt-3">{{ success_message }}</div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
 </div>
+
 
   {% include "includes/footer.html" %}
 

@@ -53,11 +53,12 @@ def employee_detail(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save() 
             messages.success(request, "Employee details saved successfully!")
             form = SignUpForm() 
     else:
         form = SignUpForm()
+        
     context['form'] = form
     return render(request, 'home/profile.html', context)
 
