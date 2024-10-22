@@ -46,11 +46,10 @@
                     </tr>
                   </thead>
                   <tbody class="list">
-                    {% with i=1 %}
                     {% for rprod in materials %}
                     <tr>
                         <td class="badge badge-dot mr-4">
-                            {{ i }}
+                            {{forloop.counter}}
                         </td>
                         <td class="badge badge-dot mr-4">
                             {{ rprod.raw_material_id.raw_material_name }}
@@ -59,9 +58,7 @@
                             {{ rprod.quantity_in_stock }}
                         </td>
                     </tr>
-                      {% with i=i|add:1 %}{% endwith %}
                       {% endfor %}
-                    {% endwith %}
                   </tbody>
                 </table>
               </div>

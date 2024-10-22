@@ -46,11 +46,10 @@
                     </tr>
                   </thead>
                   <tbody class="list">
-                    {% with i=1 %}
                     {% for fprod in products %}
                         <tr>
                             <td class="badge badge-dot mr-4">
-                                {{ i }}
+                                {{forloop.counter}}
                             </td>
                             <td class="badge badge-dot mr-4">
                                 {{ fprod.sku_id.sku_name }}  <!-- Accessing SKU name from the reference -->
@@ -62,9 +61,7 @@
                                 {{ fprod.expiry_date }}
                             </td>
                         </tr>
-                        {% with i=i|add:1 %}{% endwith %}
                     {% endfor %}
-                    {% endwith %}
                 </tbody>                
                 </table>
               </div>

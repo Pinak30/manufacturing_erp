@@ -37,7 +37,7 @@
                 <table class="table align-items-center table-dark table-flush">
                   <thead class="thead-dark">
                     <tr>
-                      <!-- <th scope="col" class="sort" data-sort="id">Sr No.</th> -->
+                      <th scope="col" class="sort" data-sort="id">Sr No.</th>
                       <th scope="col" class="sort" data-sort="order_date">Order Date</th>
                       <th scope="col" class="sort" data-sort="item">Item</th>
                       <th scope="col" class="sort" data-sort="quantity">Quantity</th>
@@ -47,6 +47,9 @@
                   <tbody class="list">
                     {% for item in milk %}
                     <tr>
+                        <td class="badge badge-dot mr-4">
+                          {{forloop.counter}}
+                        </td>
                         <td class="badge badge-dot mr-4">
                           {{ item.purchase_order_id.order_date }}
                         </td>

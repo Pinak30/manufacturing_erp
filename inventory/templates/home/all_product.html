@@ -44,12 +44,10 @@
                       <th scope="col" class="sort" data-sort="net_qty">Net Quantity</th>
                     </tr>
                   </thead>
-                  <tbody class="list">
-                    {% with i=1 %}
                     {% for prod in sku %}
                     <tr>
                         <td class="badge badge-dot mr-4">
-                            {{ i }}
+                          {{forloop.counter}}
                         </td>
                         <td class="badge badge-dot mr-4">
                             {{ prod.sku_name }}
@@ -68,9 +66,7 @@
                             {{ prod.net_qty }}
                         </td>
                     </tr>
-                      {% with i=i|add:1 %}{% endwith %}
                       {% endfor %}
-                    {% endwith %}
                   </tbody>
                 </table>
               </div>
