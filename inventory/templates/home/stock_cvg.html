@@ -51,31 +51,27 @@
                   </tr>
                 </thead>
                 <tbody class="list">
-                  {% with i=1 %}
                   <!-- Raw Material Data -->
                   {% for material in materials %}
                   <tr>
-                    <td>{{ i }}</td>
+                    <td>{{forloop.counter}}</td>
                     <td>{{ material.raw_material_id.raw_material_name }}</td>
                     <td>{{ material.raw_material_id.raw_material_life_span }} {{ material.raw_material_id.raw_material_life_span_measure }}</td>
                     <td>{{ material.remaining_life }} days</td>
                     <td>{{ material.expiry_date }}</td>
                   </tr>
-                  {% with i=i|add:1 %}{% endwith %}
                   {% endfor %}
                   
                   <!-- Ready Products Data (hidden by default) -->
                   {% for prod in products %}
                   <tr>
-                    <td>{{ i }}</td>
+                    <td>{{forloop.counter}}</td>
                     <td>{{ prod.sku_id.sku_name }}</td>
                     <td> NA </td>
                     <td>{{ prod.remaining_life }} days</td>
                     <td>{{ prod.expiry_date }}</td>
                   </tr>
-                  {% with i=i|add:1 %}{% endwith %}
                   {% endfor %}
-                  {% endwith %}
                 </tbody>
               </table>
             </div>
@@ -100,18 +96,15 @@
                   </tr>
                 </thead>
                 <tbody class="list">
-                  {% with i=1 %}
                   {% for prod in products %}
                   <tr>
-                    <td>{{ i }}</td>
+                    <td>{{forloop.counter}}</td>
                     <td>{{ prod.sku_id.sku_name }}</td>
                     <td>{{ prod.sku_id.net_qty }}</td>
                     <td>{{ prod.quantity }}</td>
                     <!-- <td>{{ prod.monthly_req }}</td> -->
                   </tr>
-                  {% with i=i|add:1 %}{% endwith %}
                   {% endfor %}
-                  {% endwith %}
                 </tbody>
               </table>
             </div>
