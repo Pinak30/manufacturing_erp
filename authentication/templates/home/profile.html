@@ -94,12 +94,13 @@
                 <!-- About Employee -->
                 <h6 class="heading-small text-muted mb-4">About Employee</h6>
                 <div class="pl-lg-4">
-                    <div class="form-group">
-                        <label class="form-control-label">History</label>
-                        {{ form.work_history }} <!-- Render the history field -->
-                    </div>
-                </div>
                 <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <p class="form-control-label">History</p>
+                            {{ form.work_history }} <!-- Render the history field -->
+                        </div>
+                    </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-control-label" for="id_shift_timings">Shift Time</label>
@@ -107,6 +108,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
                 <button type="submit" class="btn btn-primary">Submit</button> <!-- Button to submit the form -->
                 {% if success_message %} <!-- Display success message if it exists -->
                     <div class="alert alert-success mt-3">{{ success_message }}</div>
