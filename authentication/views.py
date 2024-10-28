@@ -25,7 +25,7 @@ def login(request):
                 elif employee.role == 'production':
                     return redirect('production')  
                 elif employee.role == 'HR':
-                    return redirect('index')  
+                    return redirect('employee_list')  
             else:
                 return render(request, 'accounts/login.html', {'error': 'Invalid credentials'})
 
