@@ -1,1 +1,7 @@
 *.pyc
+inventory/__pycache__/models.cpython-39.pyc
+inventory/__pycache__/models.cpython-39.pyc
+/manufacturing_erp/__pycache__
+/inventory/__pycache__
+manufacturing_erp/__pycache__/settings.cpython-39.pyc
+inventory/__pycache__/models.cpython-39.pyc
