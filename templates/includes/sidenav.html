@@ -168,10 +168,64 @@
         <!-- Nav items -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link {% if 'production' in segment %} active {% endif %}" href="{% url 'production' %}">
+            <a class="nav-link {% if 'finance' in segment %} active {% endif %}" href="{% url 'finance' %}">
               <i class="ni ni-tv-2 text-primary"></i>
               <span class="nav-link-text">Dashboard</span>
             </a>
+          <li class="nav-item">
+            <a class="nav-link {% if 'generalLedger' in segment %} active {% endif %}" href="{% url 'generalLedger' %}">
+              <i class="fas fa-layer-group"></i>
+              <span class="nav-link-text">General Ledger</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'transaction' in segment %} active {% endif %}" href="{% url 'transaction' %}">
+              <i class="fas fa-layer-group"></i>
+              <span class="nav-link-text">Transactions</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'account' in segment %} active {% endif %}" href="{% url 'account' %}">
+              <i class="fas fa-layer-group"></i>
+              <span class="nav-link-text">Accounts</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'invoice' in segment %} active {% endif %}" href="{% url 'invoice' %}">
+              <i class="fas fa-layer-group"></i>
+              <span class="nav-link-text">Invoices</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'payment' in segment %} active {% endif %}" href="{% url 'payment' %}">
+              <i class="fas fa-layer-group"></i>
+              <span class="nav-link-text">Payments</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'customer' in segment %} active {% endif %}" href="{% url 'customer' %}">
+              <i class="fas fa-layer-group"></i>
+              <span class="nav-link-text">Customers</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'purchaseorder' in segment %} active {% endif %}" href="{% url 'purchaseorder' %}">
+              <i class="fas fa-layer-group"></i>
+              <span class="nav-link-text">Purchase Orders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'expense' in segment %} active {% endif %}" href="{% url 'expense' %}">
+              <i class="fas fa-layer-group"></i>
+              <span class="nav-link-text">Expenses</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'budget' in segment %} active {% endif %}" href="{% url 'budget' %}">
+              <i class="fas fa-layer-group"></i>
+              <span class="nav-link-text">Budgets</span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
