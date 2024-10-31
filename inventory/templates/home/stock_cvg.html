@@ -18,9 +18,9 @@
                 <li class="breadcrumb-item" style="color: #8898aa; font-size:x-small">
                   <a href="#" id="readyProductsLink">Ready Products</a>
                 </li>
-                <li class="breadcrumb-item" style="font-size:x-small">
+                <!-- <li class="breadcrumb-item" style="font-size:x-small">
                   <a href="#" id="availabilityLink">Availability of product - Monthly Requirement</a>
-                </li>
+                </li> -->
               </ol>
             </nav>
           </div>
@@ -34,7 +34,7 @@
     <div class="row">
       <div class="col">
         <!-- Table for Raw Materials & Ready Products -->
-        <div id="productTable">
+        <div id="rawMaterialTable">
           <div class="card bg-default shadow">
             <div class="card-header bg-transparent border-0">
               <h3 id="tableTitle" class="text-white mb-0">Raw Materials</h3>
@@ -45,8 +45,8 @@
                   <tr>
                     <th scope="col" class="sort" data-sort="id">Sr No.</th>
                     <th scope="col" class="sort" data-sort="product_name">Product/Material Name</th>
-                    <th scope="col" class="sort" data-sort="life_span">Total Life Span</th>
-                    <th scope="col" class="sort" data-sort="remaining_life">Remaining Life</th>
+                    <th scope="col" class="sort" data-sort="life_span">Total Life Span (Days)</th>
+                    <th scope="col" class="sort" data-sort="remaining_life">Remaining Life (Days)</th>
                     <th scope="col" class="sort" data-sort="expiry_date">Expiry Date</th>
                   </tr>
                 </thead>
@@ -54,22 +54,11 @@
                   <!-- Raw Material Data -->
                   {% for material in materials %}
                   <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{ material.raw_material_id.raw_material_name }}</td>
-                    <td>{{ material.raw_material_id.raw_material_life_span }} {{ material.raw_material_id.raw_material_life_span_measure }}</td>
-                    <td>{{ material.remaining_life }} days</td>
-                    <td>{{ material.expiry_date }}</td>
-                  </tr>
-                  {% endfor %}
-                  
-                  <!-- Ready Products Data (hidden by default) -->
-                  {% for prod in products %}
-                  <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{ prod.sku_id.sku_name }}</td>
-                    <td> NA </td>
-                    <td>{{ prod.remaining_life }} days</td>
-                    <td>{{ prod.expiry_date }}</td>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ material.product_name }}</td>
+                    <td>{{ material.life_span }}</td>
+                    <td>{{ material.remaining_life|default:"N/A" }}</td>
+                    <td>{{ material.expiry_date|date:"Y-m-d"|default:"N/A" }}</td>
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -79,10 +68,10 @@
         </div>
 
         <!-- Table 2: Availability of product - Monthly Requirement -->
-        <div id="availabilityTable" style="display: none;">
+        <div id="readyProductTable" style="display: none;">
           <div class="card bg-default shadow">
             <div class="card-header bg-transparent border-0">
-              <h3 class="text-white mb-0">Availability of Product - Monthly Requirement</h3>
+              <h3 class="text-white mb-0">Ready Products</h3>
             </div>
             <div class="table-responsive">
               <table class="table align-items-center table-dark table-flush">
@@ -90,19 +79,19 @@
                   <tr>
                     <th scope="col" class="sort" data-sort="id">Sr No.</th>
                     <th scope="col" class="sort" data-sort="product_name">Product Name</th>
-                    <th scope="col" class="sort" data-sort="required_qty">Net Quantity</th>
-                    <th scope="col" class="sort" data-sort="available_qty">Available Quantity</th>
-                    <!-- <th scope="col" class="sort" data-sort="monthly_req">Monthly Requirement</th> -->
+                    <th scope="col" class="sort" data-sort="total_quantity">Total Quantity</th>
+                    <th scope="col" class="sort" data-sort="remaining_life">Remaining Life (Days)</th>
+                    <th scope="col" class="sort" data-sort="expiry_date">Expiry Date</th>
                   </tr>
                 </thead>
                 <tbody class="list">
                   {% for prod in products %}
                   <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{ prod.sku_id.sku_name }}</td>
-                    <td>{{ prod.sku_id.net_qty }}</td>
-                    <td>{{ prod.quantity }}</td>
-                    <!-- <td>{{ prod.monthly_req }}</td> -->
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ prod.product_name }}</td>
+                      <td>{{ prod.quantity }}</td>
+                      <td>{{ prod.remaining_life|default:"N/A" }}</td>
+                      <td>{{ prod.expiry_date|date:"Y-m-d"|default:"N/A" }}</td>
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -157,22 +146,16 @@
   // Switch between tables and update headers
   rawMaterialsLink.addEventListener('click', function(event) {
     event.preventDefault();
-    productTable.style.display = 'block';
-    availabilityTable.style.display = 'none';
+    rawMaterialTable.style.display = 'block';
+    readyProductTable.style.display = 'none';
     tableTitle.textContent = 'Raw Materials';
   });
 
   readyProductsLink.addEventListener('click', function(event) {
     event.preventDefault();
-    productTable.style.display = 'block';
-    availabilityTable.style.display = 'none';
+    rawMaterialTable.style.display = 'none';
+    readyProductTable.style.display = 'block';
     tableTitle.textContent = 'Ready Products';
-  });
-
-  availabilityLink.addEventListener('click', function(event) {
-    event.preventDefault();
-    productTable.style.display = 'none';
-    availabilityTable.style.display = 'block';
   });
 </script>
 {% endblock javascripts %}

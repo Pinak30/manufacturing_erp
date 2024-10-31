@@ -11,7 +11,6 @@ def inventory(request):
     }
     return render(request, 'home/inventory.html',context)
 
-from inventory.models import ProductInventory
 
 def stock_qty(request):
     products = ProductInventory.objects.all()  # Fetch all product inventories
@@ -30,62 +29,62 @@ def stock_qty_raw(request):
     }
     return render(request, 'home/stock_qty_raw.html',context)
 
+
 def stock_coverage(request):
     products = ProductInventory.objects.all()
     materials = InventoryRawMaterial.objects.all()
 
-    for product in products:
-        if product.expiry_date:
-            # Calculate remaining days from expiry_date
-            product.remaining_life = (product.expiry_date - date.today()).days
-        else:
-            product.remaining_life = "No expiry date available"
-
+    # Calculate remaining life for raw materials
     material_list = []
     for material in materials:
         if material.raw_material_id:
-            raw_material = RawMaterial.objects.get(raw_material_id=material.raw_material_id.raw_material_id)  # Get the corresponding raw material's life span
-            manufacturing_date = material.manufacturing_date  # Calculate the time passed since the manufacturing date
+            raw_material = RawMaterial.objects.get(raw_material_id=material.raw_material_id.raw_material_id)
+            manufacturing_date = material.manufacturing_date
 
             if manufacturing_date:
+                # Calculate time passed since manufacturing
                 time_passed = (timezone.now().date() - manufacturing_date).days
-
-                # Check if raw_material_life_span is not None
-                if raw_material.raw_material_life_span is not None:
-                    remaining_life = raw_material.raw_material_life_span - time_passed
-                else:
-                    remaining_life = None  # Set to None if life span is not available
-
-                if remaining_life is not None and remaining_life < 0:
-                    remaining_life = 0  # if expired
+                remaining_life = raw_material.raw_material_life_span - time_passed if raw_material.raw_material_life_span is not None else None
                 
-                # Calculate the expiry date
-                expiry_date = manufacturing_date + timedelta(days=raw_material.raw_material_life_span) if raw_material.raw_material_life_span is not None else None
+                # If remaining life is negative, set it to zero
+                if remaining_life is not None and remaining_life < 0:
+                    remaining_life = 0  # Indicates the material has expired
 
+                # Calculate expiry date
+                expiry_date = manufacturing_date + timedelta(days=raw_material.raw_material_life_span) if raw_material.raw_material_life_span is not None else None
             else:
-                remaining_life = None  # Set to None if no manufacturing date
+                remaining_life = None
                 expiry_date = None
             
-            # Append the data to the list with calculated fields
             material_list.append({
                 'product_name': raw_material.raw_material_name if raw_material else 'Unknown',
                 'life_span': raw_material.raw_material_life_span if raw_material else 'N/A',
                 'remaining_life': remaining_life,
                 'expiry_date': expiry_date,
             })
+
+    # Calculate remaining life for ready products
+    product_list = []
+    for product in products:
+        if product.expiry_date:
+            # Calculate remaining days until expiry date
+            remaining_life = (product.expiry_date - timezone.now().date()).days
+            if remaining_life < 0:
+                remaining_life = 0  # Indicates the product has expired
         else:
-            # Handle cases where raw_material_id is None
-            material_list.append({
-                'product_name': 'Unknown',
-                'life_span': 'N/A',
-                'remaining_life': None,  # Set to None
-                'expiry_date': None,
-            })
+            remaining_life = "No expiry date available"
+
+        product_list.append({
+            'product_name': product.sku_id.sku_name,  # Assuming sku_id relates to product name
+            'quantity': product.quantity,
+            'expiry_date': product.expiry_date,
+            'remaining_life': remaining_life,
+        })
 
     context = {
         'app_name': 'Inventory',
-        'products': products,
-        'materials': material_list,  # Pass the updated material list with remaining life
+        'products': product_list,  # Updated to use product_list with remaining life info
+        'materials': material_list,
     }
 
     return render(request, 'home/stock_cvg.html', context)

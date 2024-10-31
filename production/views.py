@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import *
 
 # Create your views here.
 
@@ -17,8 +18,10 @@ def masterproduction(request):
 
 
 def bommanagement(request):
+        bom = BOM.objects.all()
         context = {
         'app_name': 'Production',  # Pass app name dynamically
+        'bom': bom,
     }
         return render(request, 'home/bommanagement.html',context)
 
