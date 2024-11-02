@@ -90,14 +90,14 @@ def stock_coverage(request):
     return render(request, 'home/stock_cvg.html', context)
 
 
-# def milk_procurementation(request):
-#     milk = PurchaseOrderItem.objects.all()
-#     # milk = PurchaseOrderItem.objects.filter(raw_material_id__raw_material_name="milk")
-#     context = {
-#         'app_name': 'Inventory',
-#         'milk':milk
-#     }
-#     return render(request, 'home/milk_procurementation.html',context)
+def milk_procurementation(request):
+    milk = PurchaseOrderItem.objects.all()
+    # milk = PurchaseOrderItem.objects.filter(raw_material_id__raw_material_name="milk")
+    context = {
+        'app_name': 'Inventory',
+        'milk':milk
+    }
+    return render(request, 'home/milk_procurementation.html',context)
 
 def active_sku(request):
     sku = Sku.objects.filter(active=2)
@@ -127,11 +127,11 @@ def inventory_transaction_summary(request):
     }
     return render(request, 'home/inventory_transaction_summary.html',context)
 
-# def stoke_movement_analysis(request):
-#     context = {
-#         'app_name': 'Inventory',
-#     }
-#     return render(request, 'home/stoke_movement_analysis.html',context)
+def stoke_movement_analysis(request):
+    context = {
+        'app_name': 'Inventory',
+    }
+    return render(request, 'home/stoke_movement_analysis.html',context)
 
 # def open_purchase_orders(request):
 #     context = {

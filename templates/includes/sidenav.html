@@ -59,7 +59,7 @@
               <span class="nav-link-text">Stock Coverage</span>
             </a>
           <li class="nav-item">
-            <a class="nav-link {% if 'milk_procurementation' in segment %} active {% endif %}" href="{ % url 'milk_procurementation' %}">
+            <a class="nav-link {% if 'milk_procurementation' in segment %} active {% endif %}" href="{% url 'milk_procurementation' %}">
               <i class="fas fa-truck-moving"></i>
               <span class="nav-link-text">Milk Procurementation</span>
             </a>
@@ -84,11 +84,11 @@
               <span class="nav-link-text">Inventory Transaction Summary</span>
             </a>
           <li class="nav-item">
-            <a class="nav-link {% if 'stoke_movement_analysis' in segment %} active {% endif %}" href="{ % url 'stoke_movement_analysis' %}">
+            <a class="nav-link {% if 'stoke_movement_analysis' in segment %} active {% endif %}" href="{% url 'stoke_movement_analysis' %}">
               <i class="fas fa-dolly-flatbed"></i>
               <span class="nav-link-text">Stock Movement Analysis</span>
             </a>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link {% if 'open_purchase_orders' in segment %} active {% endif %}" href="{ % url 'open_purchase_orders' %}">
               <i class="fas fa-boxes"></i>
               <span class="nav-link-text">Open Purchase Orders</span>
@@ -102,7 +102,7 @@
             <a class="nav-link {% if 'historic_trend_analysis' in segment %} active {% endif %}" href="{ % url 'historic_trend_analysis' %}">
               <i class="fas fa-chart-line"></i>
               <span class="nav-link-text">Historic Trend Analysis</span>
-            </a>
+            </a> -->
         </ul>
       </div>
     </div>
