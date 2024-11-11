@@ -1,11 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    Inside master prod
-</body>
-</html>
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col">
+            <div class="card bg-default shadow">
+                <div class="card-header bg-transparent">
+                    <h3 class="text-white mb-0">Product Manufacturing</h3>
+                </div>
+                <div class="card-body">
+                    <form method="get" action="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="text-white">Select a Product</label>
+                                <select name="sku_id" class="form-control" onchange="this.form.submit()">
+                                    <option disabled selected>Choose a product</option>
+                                    {% for bom_item in bom_list %}
+                                        <option value="{{ bom_item.sku_id.sku_id }}" {% if bom_item.sku_id.sku_id|stringformat:"s" == selected_sku_id %}selected{% endif %}>
+                                            {{ bom_item.sku_id.sku_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-white">Enter Quantity to Produce</label>
+                                <input type="number" name="quantity" class="form-control" value="{{ entered_quantity }}" min="1" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                    </form>
+
+                    {% if selected_bom and raw_materials_info %}
+                        <h4 class="text-white mt-5">Materials Required for {{ selected_bom.sku_id.sku_name }}</h4>
+                        <div class="table-responsive">
+                            <table class="table table-dark">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Sr No.</th>
+                                        <th scope="col">Raw Material Name</th>
+                                        <th scope="col">Actual Quantity</th>
+                                        <th scope="col">Required Quantity</th>
+                                        <th scope="col">Reorder</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for material in raw_materials_info %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ material.name }}</td>
+                                            <td>{{ material.actual_qty }}</td>
+                                            <td>{{ material.required_qty }}</td>
+                                            <td>
+                                                {% if material.needs_reorder %}
+                                                    <button class="btn btn-danger btn-sm">Reorder</button>
+                                                {% else %}
+                                                    <span class="badge badge-success">Sufficient</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {% if batches_info %}
+                            <div class="mt-4">
+                                <h5 class="text-white">Batch Information</h5>
+                                <p class="text-white">Batch Size: {{ batches_info.batch_size }}</p>
+                                <p class="text-white">Batches Required: {{ batches_info.batches_required }}</p>
+                                <p class="text-white">Batch Distribution: {{ batches_info.batch_distribution }}</p>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
