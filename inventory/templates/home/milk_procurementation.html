@@ -47,18 +47,34 @@
                   <tbody class="list">
                     {% for item in milk %}
                     <tr>
-                        <td class="badge badge-dot mr-4">
-                          {{forloop.counter}}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                          {{ item.purchase_order_id.order_date }}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                          {{ item.raw_material_id.raw_material_name }}
-                        </td>
-                        <td class="badge badge-dot mr-4">
-                          {{ item.quantity }}
-                        </td>
+                      <td scope="row">
+                        <div class="media align-items-center">
+                          <div class="media-body">
+                            {{forloop.counter}}
+                          </div>
+                        </div>
+                      </td>
+                      <td scope="row">
+                        <div class="media align-items-center">
+                          <div class="media-body">
+                            {{ item.purchase_order_id.order_date }}
+                          </div>
+                        </div>
+                      </td>
+                      <td scope="row">
+                        <div class="media align-items-center">
+                          <div class="media-body">
+                            {{ item.raw_material_id.raw_material_name }}
+                          </div>
+                        </div>
+                      </td>
+                      <td scope="row">
+                        <div class="media align-items-center">
+                          <div class="media-body">
+                            {{ item.quantity }}
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                     {% endfor %}
                   </tbody>
