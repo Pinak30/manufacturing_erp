@@ -91,13 +91,14 @@ def stock_coverage(request):
 
 
 def milk_procurementation(request):
-    milk = PurchaseOrderItem.objects.all()
-    # milk = PurchaseOrderItem.objects.filter(raw_material_id__raw_material_name="milk")
+    milk_raw_material = RawMaterial.objects(raw_material_name="milk").first()
+    milk = PurchaseOrderItem.objects.filter(raw_material_id=milk_raw_material.id) if milk_raw_material else []
     context = {
         'app_name': 'Inventory',
-        'milk':milk
+        'milk': milk
     }
-    return render(request, 'home/milk_procurementation.html',context)
+    return render(request, 'home/milk_procurementation.html', context)
+
 
 def active_sku(request):
     sku = Sku.objects.filter(active=2)

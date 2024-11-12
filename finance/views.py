@@ -20,36 +20,46 @@ def generalLedger(request):
 
 
 def transaction(request):
+        transactions = Transaction.objects.all()
         context = {
         'app_name': 'Finance',  # Pass app name dynamically
+        'transactions': transactions,
     }
         return render(request, 'home/transaction.html',context)
 
 
 def account(request):
+        accounts = Account.objects.all()
         context = {
         'app_name': 'Finance',  # Pass app name dynamically
+        'accounts': accounts
     }
         return render(request, 'home/account.html',context)
 
 
 def invoice(request):
+        invoices = Invoice.objects.all()
         context = {
         'app_name': 'Finance',  # Pass app name dynamically
+        'invoices': invoices,
     }
         return render(request, 'home/invoice.html',context)
 
 
 def payment(request):
+        payments = Payment.objects.all()
         context = {
         'app_name': 'Finance',  # Pass app name dynamically
+        'payments': payments,
     }
         return render(request, 'home/payment.html',context)
 
 
 def customer(request):
+        customers = Customer.objects.all()
         context = {
         'app_name': 'Finance',  # Pass app name dynamically
+        'customers': customers,
     }
         return render(request, 'home/customer.html',context)
 
@@ -64,14 +74,18 @@ def purchaseorder(request):
 
 
 def expense(request):
+        expenses = Expense.objects.all()
         context = {
         'app_name': 'Finance',  # Pass app name dynamically
+        'expenses': expenses
     }
         return render(request, 'home/expense.html',context)
 
 
 def budget(request):
+        budgets = Budget.objects.all()
         context = {
         'app_name': 'Finance',  # Pass app name dynamically
+        'budgets': budgets,
     }
         return render(request, 'home/budget.html',context)

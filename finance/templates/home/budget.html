@@ -8,11 +8,11 @@
       <div class="header-body">
         <div class="row align-items-center py-4">
           <div class="col-lg-6 col-7">
-            <h6 class="h2 text-white d-inline-block mb-0">Accounts</h6>
+            <h6 class="h2 text-white d-inline-block mb-0">Budgets</h6>
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
               <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                 <li class="breadcrumb-item"><a href="{% url 'finance' %}"><i class="fas fa-home"></i></a></li>
-                <li class="breadcrumb-item active" style="color: #8898aa;"><a href="{% url 'payment' %}">Accounts</a></li>
+                <li class="breadcrumb-item active" style="color: #8898aa;"><a href="{% url 'budget' %}">Budgets</a></li>
             </ol>
             </nav>
           </div>
@@ -30,46 +30,46 @@
       <div class="col">
         <div class="card bg-default shadow">
           <div class="card-header bg-transparent border-0">
-            <h3 class="text-white mb-0">View Accounts</h3>
+            <h3 class="text-white mb-0">View Budgets</h3>
           </div>
           <div class="table-responsive">
             <table class="table align-items-center table-dark table-flush">
               <thead class="thead-dark">
                 <tr>
-                  <th scope="col" class="sort" data-sort="id">Payment ID</th>
-                  <th scope="col" class="sort" data-sort="payment_date">Payment Date</th>
-                  <th scope="col" class="sort" data-sort="amount_paid">Amount Paid</th>
-                  <th scope="col" class="sort" data-sort="invoice_id">Invoice ID</th>
+                  <th scope="col" class="sort" data-sort="id">Sr No.</th>
+                  <th scope="col" class="sort" data-sort="year">Year</th>
+                  <th scope="col" class="sort" data-sort="total_budget">Total Budget</th>
+                  <th scope="col" class="sort" data-sort="allocated_amount">Allocated Amount</th>
                 </tr>
               </thead>
               <tbody class="list">
-                {% for payment in payments %}
+                {% for budget in budgets %}
                 <tr>
                   <td scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        {{ payment.payment_id }}
+                        {{ forloop.counter }}
                       </div>
                     </div>
                   </td>
                   <td scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        {{ payment.payment_date }}
+                        {{ budget.year }}
                       </div>
                     </div>
                   </td>
                   <td scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        {{ payment.amount_paid }}
+                        {{ budget.total_budget }}
                       </div>
                     </div>
                   </td>
                   <td scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        {{ payment.invoice_id.invoice_id }}
+                        {{ budget.allocated_amount }}
                       </div>
                     </div>
                   </td>

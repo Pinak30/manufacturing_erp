@@ -1,0 +1,122 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+
+{% block content %}
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Transactions</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="{% url 'finance' %}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active" style="color: #8898aa;"><a href="{% url 'transaction' %}">Transactions</a></li>
+            </ol>
+            </nav>
+          </div>
+          <!-- <div class="col-lg-6 col-5 text-right">
+            <a href="#" class="btn btn-sm btn-neutral">Filters</a>
+          </div> -->
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="container-fluid mt--6">
+    <!-- Dark table -->
+    <div class="row">
+      <div class="col">
+        <div class="card bg-default shadow">
+          <div class="card-header bg-transparent border-0">
+            <h3 class="text-white mb-0">View Transactions</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-items-center table-dark table-flush">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="sort" data-sort="expense_id">Transaction ID</th>
+                  <th scope="col" class="sort" data-sort="expense_type">Transaction Date</th>
+                  <th scope="col" class="sort" data-sort="amount">Amount</th>
+                  <th scope="col" class="sort" data-sort="customer_contact">Account Name</th>
+                  <th scope="col" class="sort" data-sort="invoice_date">Ledger Name</th>
+                  <th scope="col" class="sort" data-sort="invoice_date">Payment ID</th>
+                  <th scope="col" class="sort" data-sort="invoice_date">Expense ID</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+                {% for transaction in transactions %}
+                <tr>
+                  <td scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        {{ transaction.transaction_id }}
+                      </div>
+                    </div>
+                  </td>
+                  <td scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        {{ transaction.transaction_date }}
+                      </div>
+                    </div>
+                  </td>
+                  <td scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        {{ transaction.amount }}
+                      </div>
+                    </div>
+                  </td>
+                  <td scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        {{ transaction.account_id.account_name }}
+                      </div>
+                    </div>
+                  </td>
+                  <td scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        {{ transaction.ledger_id.ledger_name }}
+                      </div>
+                    </div>
+                  </td>
+                  <td scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        {{ transaction.payment_id.payment_id }}
+                      </div>
+                    </div>
+                  </td>
+                  <td scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        {{ transaction.expense_id.expense_id }}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="card-footer py-4">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "includes/footer.html" %}
+
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

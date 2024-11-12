@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import *
 from inventory.models import InventoryRawMaterial
 
+
 # Create your views here.
 
 def production(request):
