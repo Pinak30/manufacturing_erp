@@ -52,9 +52,10 @@
                                             <td>{{ material.required_qty }}</td>
                                             <td>
                                                 {% if material.needs_reorder %}
-                                                    <button class="btn btn-danger btn-sm">Reorder</button>
+                                                    <!-- <button class="btn btn-danger btn-sm">Reorder</button> -->
+                                                    <span class="badge badge-danger" style="font-size:xx-small;">Insufficient</span>
                                                 {% else %}
-                                                    <span class="badge badge-success">Sufficient</span>
+                                                    <span class="badge badge-success" style="font-size:xx-small;">Sufficient</span>
                                                 {% endif %}
                                             </td>
                                         </tr>
