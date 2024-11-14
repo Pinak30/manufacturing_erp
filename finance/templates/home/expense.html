@@ -37,10 +37,10 @@
               <thead class="thead-dark">
                 <tr>
                   <th scope="col" class="sort" data-sort="expense_id">Expense ID</th>
-                  <th scope="col" class="sort" data-sort="expense_type">Expense Type</th>
-                  <th scope="col" class="sort" data-sort="amount">Amount</th>
-                  <th scope="col" class="sort" data-sort="purchase_order_id">Purchase Order ID</th>
                   <th scope="col" class="sort" data-sort="supplier_name">Supplier Name</th>
+                  <th scope="col" class="sort" data-sort="expense_type">Expense Type</th>
+                  <th scope="col" class="sort" data-sort="purchase_order_id">Purchase Order ID</th>
+                  <th scope="col" class="sort" data-sort="amount">Amount</th>
                 </tr>
               </thead>
               <tbody class="list">
@@ -56,14 +56,14 @@
                   <td scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        {{ expense.expense_type }}
+                        {{ expense.purchase_order_id.supplier_id.supplier_name }}
                       </div>
                     </div>
                   </td>
                   <td scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        {{ expense.amount }}
+                        {{ expense.expense_type }}
                       </div>
                     </div>
                   </td>
@@ -77,10 +77,10 @@
                   <td scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        {{ expense.purchase_order_id.supplier_id.supplier_name }}
+                        {{ expense.amount }}
                       </div>
                     </div>
-                  </td>
+                  </td>          
                 </tr>
                   {% endfor %}
               </tbody>

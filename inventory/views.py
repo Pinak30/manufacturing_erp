@@ -38,27 +38,26 @@ def stock_coverage(request):
     material_list = []
     for material in materials:
         if material.raw_material_id:
-            raw_material = RawMaterial.objects.get(raw_material_id=material.raw_material_id.raw_material_id)
+            raw_material = material.raw_material_id  # Access the referenced RawMaterial object directly
+
             manufacturing_date = material.manufacturing_date
-
-            if manufacturing_date:
-                # Calculate time passed since manufacturing
-                time_passed = (timezone.now().date() - manufacturing_date).days
-                remaining_life = raw_material.raw_material_life_span - time_passed if raw_material.raw_material_life_span is not None else None
-                
-                # If remaining life is negative, set it to zero
-                if remaining_life is not None and remaining_life < 0:
-                    remaining_life = 0  # Indicates the material has expired
-
+            if manufacturing_date and raw_material.raw_material_life_span:
                 # Calculate expiry date
-                expiry_date = manufacturing_date + timedelta(days=raw_material.raw_material_life_span) if raw_material.raw_material_life_span is not None else None
+                expiry_date = manufacturing_date + timedelta(days=raw_material.raw_material_life_span)
+
+                # Calculate time remaining until expiry
+                remaining_life = (expiry_date - timezone.now().date()).days
+        
+                # If remaining life is negative, set it to zero to indicate expiry
+                if remaining_life < 0:
+                    remaining_life = 0
             else:
                 remaining_life = None
                 expiry_date = None
-            
+
             material_list.append({
-                'product_name': raw_material.raw_material_name if raw_material else 'Unknown',
-                'life_span': raw_material.raw_material_life_span if raw_material else 'N/A',
+                'product_name': raw_material.raw_material_name,
+                'life_span': raw_material.raw_material_life_span,
                 'remaining_life': remaining_life,
                 'expiry_date': expiry_date,
             })

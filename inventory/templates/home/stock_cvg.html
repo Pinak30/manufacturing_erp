@@ -57,7 +57,7 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ material.product_name }}</td>
                     <td>{{ material.life_span }}</td>
-                    <td>{{ material.remaining_life|default:"N/A" }}</td>
+                    <td>{{ material.remaining_life }}</td>
                     <td>{{ material.expiry_date|date:"Y-m-d"|default:"N/A" }}</td>
                   </tr>
                   {% endfor %}
