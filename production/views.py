@@ -1,15 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import BOMForm
 from .models import *
 from inventory.models import InventoryRawMaterial
-
+from django.contrib import messages
 
 # Create your views here.
-
 def production(request):
         context = {
         'app_name': 'Production',  # Pass app name dynamically
     }
         return render(request, 'home/production.html',context)
+
 
 def masterproduction(request):
     bom_list = BOM.objects.all()
@@ -62,13 +63,115 @@ def masterproduction(request):
     }
     return render(request, 'home/masterproduction.html', context)
 
+
 def bommanagement(request):
-        bom = BOM.objects.all()
-        context = {
-        'app_name': 'Production',  # Pass app name dynamically
+    """
+    List all BOMs with basic details.
+    """
+    bom = BOM.objects.all()
+    context = {
+        'app_name': 'Production',
         'bom': bom,
     }
-        return render(request, 'home/bommanagement.html',context)
+    return render(request, 'home/bommanagement.html', context)
+
+
+def bom_add(request):
+    """
+    View for adding a new BOM.
+    """
+    if request.method == 'POST':
+        form = BOMForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "BOM created successfully!")
+            return redirect('bommanagement')  # Redirect to BOM management page
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = BOMForm()
+
+    context = {
+        'app_name': 'Production',
+        'segment': 'create_bom',
+        'form': form,
+        'is_update': False,
+    }
+    return render(request, 'home/bomadd.html', context)
+
+
+def bom_update(request, bom_id):
+    """
+    View for updating an existing BOM.
+    """
+    try:
+        bom = BOM.objects.get(bom_id=bom_id)
+    except BOM.DoesNotExist:
+        messages.error(request, "The book you're trying to edit does not exist.")
+        return redirect('book_list')
+
+    if request.method == 'POST':
+        form = BOMForm(request.POST)
+        if form.is_valid():
+            form.save(instance=bom)
+            messages.success(request, "BOM updated successfully!")
+            return redirect('viewbom', bom_id=bom.bom_id)
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = BOMForm(initial={
+            'bom_id': bom.bom_id,
+            'sku_id': str(bom.sku_id),
+            'raw_material_id': [str(rm) for rm in bom.raw_material_id],
+            'qty_required': ','.join(map(str, bom.qty_required)),
+            'machine_required': ','.join(bom.machine_required),
+            'designation_id': [str(des) for des in bom.designation_id],
+            'required_worker': ','.join(map(str, bom.required_worker)),
+            'by_product': ','.join(map(str, bom.by_product)),
+            'qty_to_be_produced': bom.qty_to_be_produced,
+        })
+
+    context = {
+        'app_name': 'Production',
+        'segment': 'update_bom',
+        'form': form,
+        'is_update': True,
+    }
+    return render(request, 'home/bomadd.html', context)
+
+
+def viewbom(request, bom_id):
+    """
+    View detailed BOM information.
+    """
+    try:
+        bom = BOM.objects.get(bom_id=bom_id)
+    except BOM.DoesNotExist:
+        return redirect('bommanagement')
+
+    raw_materials = []
+    for i in range(len(bom.raw_material_id)):
+        # Fetch the Designation object
+        rawMaterial_obj = bom.raw_material_id[i] # Assuming Designation is referenced by _id or id
+        count = bom.qty_required[i]
+        raw_materials.append((rawMaterial_obj.raw_material_name, count))
+
+    # Zip designation_id and required_worker together
+    designation_worker_details = []
+    for i in range(len(bom.designation_id)):
+        # Fetch the Designation object
+        designation_obj = bom.designation_id[i] # Assuming Designation is referenced by _id or id
+        worker = bom.required_worker[i]
+        designation_worker_details.append((designation_obj.designation_name, worker))
+
+    context = {
+        'bom': bom,
+        'raw_materials': raw_materials,
+        'designation_worker_details': designation_worker_details,  
+        'app_name': 'Production', 
+    }
+
+    return render(request, 'home/viewbom.html', context)
 
 
 def materialreqplan(request):

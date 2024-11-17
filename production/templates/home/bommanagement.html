@@ -31,24 +31,20 @@
           <div class="col">
             <div class="card bg-default shadow">
               <div class="card-header bg-transparent border-0">
-                <h3 class="text-white mb-0">Bill of Material</h3>
+                <h3 class="text-white mb-0">Select SKU</h3>
               </div>
               <div class="table-responsive">
                 <table class="table align-items-center table-dark table-flush">
                   <thead class="thead-dark">
                     <tr>
                       <th scope="col" class="sort" data-sort="id">Sr No.</th>
-                      <th scope="col" class="sort" data-sort="product_name">SKU Name</th>
-                      <th scope="col" class="sort" data-sort="net_qty">Required Raw Materials</th>
-                      <th scope="col" class="sort" data-sort="material_type">Quantities</th>
-                      <th scope="col" class="sort" data-sort="unit_price">Required Machines</th>
-                      <!-- <th scope="col" class="sort" data-sort="unit_price">Designations</th> -->
-                      <th scope="col" class="sort" data-sort="unit_price">By-product</th>
-                      <th scope="col" class="sort" data-sort="unit_price">Producted Quantity</th>
+                      <th scope="col" class="sort" data-sort="sku_id">SKU ID</th>
+                      <th scope="col" class="sort" data-sort="sku_name">SKU Name</th>
+                      <th scope="col" class="sort" data-sort="actions">Actions</th>
                     </tr>
                   </thead>
                   <tbody class="list">
-                    {% for boms in bom %}
+                    {% for bom in bom %}
                     <tr>
                       <td scope="row">
                         <div class="media align-items-center">
@@ -60,78 +56,33 @@
                       <td scope="row">
                         <div class="media align-items-center">
                           <div class="media-body">
-                            {{ boms.sku_id.sku_name }}
+                            {{ bom.sku_id.sku_id }}
                           </div>
                         </div>
                       </td>
                       <td scope="row">
                         <div class="media align-items-center">
                           <div class="media-body">
-                            <ul>
-                                {% for raw_material in boms.raw_material_id %}
-                                <li>{{ raw_material.raw_material_name }}</li>
-                                {% endfor %}
-                            </ul>
+                            {{ bom.sku_id.sku_name }}
                           </div>
                         </div>
                       </td>
                       <td scope="row">
-                        <div class="media align-items-center">
-                          <div class="media-body">
-                            <ul>
-                                {% for qty in boms.qty_required %}
-                                <li>{{ qty }}</li>
-                                {% endfor %}
-                            </ul>        
+                        <div class="dropdown">
+                          <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v"></i>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a class="dropdown-item" href="{% url 'viewbom' bom.bom_id %}">View</a>
+                            <a class="dropdown-item" href="{% url 'update_bom' bom.bom_id %}">Update</a>
                           </div>
                         </div>
-                      </td>
-                      <td scope="row">
-                        <div class="media align-items-center">
-                          <div class="media-body">
-                            <ul>
-                                {% for machine in boms.machine_required %}
-                                <li>{{ machine }}</li>
-                                {% endfor %}
-                            </ul>
-                          </div>
-                        </div>
-                      </td>
-                      <!-- <td scope="row">
-                        <div class="media align-items-center">
-                          <div class="media-body">
-                            <ul>
-                                {% for designation_id, count in bom.designation_required.items %}
-                                <li>
-                                    
-                                </li>
-                                {% endfor %}
-                            </ul>
-                          </div>
-                        </div>
-                      </td> -->
-                      <td scope="row">
-                        <div class="media align-items-center">
-                          <div class="media-body">
-                            <ul>
-                                {% for by_product in boms.by_product %}
-                                <li>{{ by_product }}</li>
-                                {% endfor %}
-                            </ul>
-                          </div>
-                        </div>
-                      </td>
-                      <td scope="row">
-                        <div class="media align-items-center">
-                          <div class="media-body">
-                            {{ boms.qty_to_be_produced }}
-                          </div>
-                        </div>
-                      </td>
+                      </td>                                                                              
                     </tr>
                       {% endfor %}
                   </tbody>
                 </table>
+                <a href="{% url 'add_bom' %}" class="btn btn-success">Add New BOM</a>
               </div>
             </div>
           </div>

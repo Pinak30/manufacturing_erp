@@ -1,0 +1,68 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Bill of Material{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Bill of Material</h1>
+    <table class="table table-bordered">
+        <tr>
+            <th>BOM ID</th>
+            <td>{{ bom.bom_id }}</td>
+        </tr>
+        <tr>
+            <th>SKU ID</th>
+            <td>{{ bom.sku_id.sku_id }}</td>
+        </tr>
+        <tr>
+            <th>SKU Name</th>
+            <td>{{ bom.sku_id.sku_name }}</td>
+        </tr>
+        <tr>
+            <th>Raw Materials Required</th>
+            <td>
+                <ul>
+                    {% for raw_material_name, count in raw_materials %}
+                    <li>{{ raw_material_name }}: {{ count }} qunatities</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Machines Required</th>
+            <td>
+                <ul>
+                    {% for machine in bom.machine_required %}
+                    <li>{{ machine }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Designations and Required Workers</th>
+            <td>
+                <ul>
+                    {% for designation_name, worker in designation_worker_details %}
+                        <li>{{ designation_name }}: {{ worker }} workers</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>By-products</th>
+            <td>
+                <ul>
+                    {% for by_product in bom.by_product %}
+                    <li>{{ by_product }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Quantity to be Produced</th>
+            <td>{{ bom.qty_to_be_produced }}</td>
+        </tr>
+    </table>
+    <a href="{% url 'bommanagement' %}" class="btn btn-secondary">Back to BOM List</a>
+</div>
+{% endblock content %}

@@ -53,7 +53,7 @@ class PurchaseOrderItem(Document):
     quantity = IntField(required=True)
     price_per_unit = DecimalField(precision=2)
 
- 
+
 class ProductionBatch(Document):
     batch_id = IntField(primary_key=True, max_length=100)  # Primary Key
     batch_date = DateField(required=True)

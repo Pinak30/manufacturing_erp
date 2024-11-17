@@ -1,6 +1,6 @@
 from mongoengine import Document, StringField, ReferenceField, IntField, DateField, ListField, DictField
 from inventory.models import Sku, RawMaterial
-from authentication.models import  Employee
+from authentication.models import  Employee, Designation
 
 class BOM(Document):
     bom_id = IntField(primary_key=True, max_length=100)  # Primary Key
@@ -8,7 +8,8 @@ class BOM(Document):
     raw_material_id = ListField(ReferenceField(RawMaterial, reverse_delete_rule=4))  # List of Foreign Keys
     qty_required = ListField(IntField())  # List of quantities as float numbers
     machine_required = ListField(StringField())  # List of machine names
-    designation_required = DictField()   # List of designations
+    designation_id = ListField(ReferenceField(Designation, reverse_delete_rule=4))   # List of designations
+    required_worker = ListField(IntField())
     by_product = ListField(IntField())  # List of by-products
     qty_to_be_produced = IntField(required=True)  # Quantity to be produced
   
