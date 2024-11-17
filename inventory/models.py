@@ -1,4 +1,5 @@
 from mongoengine import Document, StringField, ReferenceField, IntField, DateField, DecimalField
+from datetime import timedelta
 
 class Material(Document):
     material_id = IntField(primary_key=True)  
@@ -38,6 +39,12 @@ class InventoryRawMaterial(Document):
     location = StringField()
     manufacturing_date = DateField()
     order_date = DateField()
+
+    @property
+    def expiry_date(self):
+        if self.raw_material_id.raw_material_life_span and self.manufacturing_date:
+            return self.manufacturing_date + timedelta(days=self.raw_material_id.raw_material_life_span)
+        return None
 
 
 class PurchaseOrder(Document):

@@ -38,7 +38,7 @@
                       <th scope="col" class="sort" data-sort="id">Sr No.</th>
                       <th scope="col" class="sort" data-sort="product_name">Product Name</th>
                       <th scope="col" class="sort" data-sort="quantity">Quantity</th>
-                      <!-- <th scope="col" class="sort" data-sort="expiry_date">Manufacturing Date</th> -->
+                      <th scope="col" class="sort" data-sort="expiry_date">Expriy Date</th>
                     </tr>
                   </thead>
                   <tbody class="list">
@@ -47,26 +47,37 @@
                       <td scope="row">
                         <div class="media align-items-center">
                           <div class="media-body">
-                            {{forloop.counter}}
+                            {{ forloop.counter }}
                           </div>
                         </div>
                       </td>
                       <td scope="row">
-                        <div class="media align-items-center">
-                          <div class="media-body">
-                            {{ rprod.raw_material_id.raw_material_name }}
+                          <div class="media align-items-center">
+                              <div class="media-body">
+                                  {{ rprod.raw_material_id.raw_material_name }}
+                              </div>
                           </div>
-                        </div>
                       </td>
                       <td scope="row">
-                        <div class="media align-items-center">
-                          <div class="media-body">
-                            {{ rprod.quantity_in_stock }}
+                          <div class="media align-items-center">
+                              <div class="media-body">
+                                  {{ rprod.quantity_in_stock }}
+                              </div>
                           </div>
-                        </div>
+                      </td>
+                      <td scope="row">
+                          <div class="media align-items-center">
+                              <div class="media-body">
+                                  {% if rprod.expiry_date %}
+                                      {{ rprod.expiry_date|date:"Y-m-d" }}
+                                  {% else %}
+                                      No expiry date
+                                  {% endif %}
+                              </div>
+                          </div>
                       </td>
                     </tr>
-                      {% endfor %}
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>

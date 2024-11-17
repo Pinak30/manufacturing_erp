@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import *
+from mongoengine import Q
 from django.utils import timezone
 from datetime import timedelta
 from datetime import date
@@ -23,6 +24,7 @@ def stock_qty(request):
 
 def stock_qty_raw(request):
     materials = InventoryRawMaterial.objects.all()
+            
     context = {
         'app_name': 'Inventory',
         'materials': materials,
@@ -107,6 +109,7 @@ def active_sku(request):
     }
     return render(request, 'home/active_sku.html',context)
 
+
 def all_product_list(request):
     sku = Sku.objects.all()
     context = {
@@ -115,11 +118,98 @@ def all_product_list(request):
     }
     return render(request, 'home/all_product.html',context)
 
+
 def inventory_value(request):
+    # Calculate total inventory value for finished products
+    finished_product_value = ProductInventory.objects.aggregate(
+        {
+            '$lookup': {
+                'from': 'sku',
+                'localField': 'sku_id',
+                'foreignField': '_id',
+                'as': 'sku_info'
+            }
+        },
+        {
+            '$unwind': '$sku_info'
+        },
+        {
+            '$project': {
+                'total_value': {'$multiply': ['$quantity', '$sku_info.unit_price']}
+            }
+        },
+        {
+            '$group': {
+                '_id': None,
+                'total_value': {'$sum': '$total_value'}
+            }
+        }
+    )
+    finished_product_value = list(finished_product_value)
+    finished_product_value = finished_product_value[0]['total_value'] if finished_product_value else 0
+
+    # Calculate total inventory value for raw materials
+    raw_material_value = InventoryRawMaterial.objects.aggregate(
+        {
+            '$lookup': {
+                'from': 'raw_material',
+                'localField': 'raw_material_id',
+                'foreignField': '_id',
+                'as': 'raw_material_info'
+            }
+        },
+        {
+            '$unwind': '$raw_material_info'
+        },
+        {
+            '$project': {
+                'total_value': {'$multiply': ['$quantity_in_stock', '$raw_material_info.raw_material_unit_price']}
+            }
+        },
+        {
+            '$group': {
+                '_id': None,
+                'total_value': {'$sum': '$total_value'}
+            }
+        }
+    )
+    raw_material_value = list(raw_material_value)
+    raw_material_value = raw_material_value[0]['total_value'] if raw_material_value else 0
+
+    # Calculate total inventory value (finished products + raw materials)
+    total_inventory_value = finished_product_value + raw_material_value
+
+    # Fetch the list of SKUs and their inventory values
+    sku_inventory_values = ProductInventory.objects.aggregate(
+        {
+            '$lookup': {
+                'from': 'sku',
+                'localField': 'sku_id',
+                'foreignField': '_id',
+                'as': 'sku_info'
+            }
+        },
+        {
+            '$unwind': '$sku_info'
+        },
+        {
+            '$project': {
+                'sku_name': '$sku_info.sku_name',
+                'total_value': {'$multiply': ['$quantity', '$sku_info.unit_price']}
+            }
+        }
+    )
+    sku_inventory_values = list(sku_inventory_values)
+
     context = {
         'app_name': 'Inventory',
+        'total_inventory_value': total_inventory_value,
+        'raw_material_value': raw_material_value,
+        'finished_product_value': finished_product_value,
+        'sku_inventory_values': sku_inventory_values,
     }
     return render(request, 'home/inventory_value.html',context)
+
 
 def inventory_transaction_summary(request):
     context = {

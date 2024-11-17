@@ -1,11 +1,144 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Value</title>
-</head>
-<body>
-    Inside Inventory Value
-</body>
-</html>
+{% extends 'layouts/base.html' %}
+
+{% block title %} Tables {% endblock title %}
+
+{% block content %}
+  <div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Inventory Value</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="{% url 'inventory' %}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active" style="color: #8898aa;"><a href="{% url 'inventory_value' %}">Inventory Value</a></li>
+            </ol>
+            </nav>
+          </div>
+          <!-- <div class="col-lg-6 col-5 text-right">
+            <a href="#" class="btn btn-sm btn-neutral">Filters</a>
+          </div> -->
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total Inventory Value</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ total_inventory_value|floatformat:2 }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
+                        <i class="ni ni-active-40"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Raw Material Inventory Value</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ raw_material_value|floatformat:2 }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
+                        <i class="ni ni-chart-pie-35"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-6">
+              <div class="card card-stats">
+                <!-- Card body -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Finished Product Inventory Value</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ finished_product_value|floatformat:2 }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
+                        <i class="ni ni-money-coins"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+  <!-- Page content -->
+  <div class="container-fluid mt--6">
+        <!-- Dark table -->
+        <div class="row">
+          <div class="col">
+            <div class="card bg-default shadow">
+              <div class="card-header bg-transparent border-0">
+                <h3 class="text-white mb-0">SKU Inventory Value</h3>
+              </div>
+              <div class="table-responsive">
+                <table class="table align-items-center table-dark table-flush">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" class="sort" data-sort="id">Sr No.</th>
+                      <th scope="col" class="sort" data-sort="product_name">SKU Name</th>
+                      <th scope="col" class="sort" data-sort="active">Total Value</th>
+                    </tr>
+                  </thead>
+                    {% for sku in sku_inventory_values %}
+                    <tr>
+                      <td scope="row">
+                        <div class="media align-items-center">
+                          <div class="media-body">
+                            {{forloop.counter}}
+                          </div>
+                        </div>
+                      </td>
+                      <td scope="row">
+                        <div class="media align-items-center">
+                          <div class="media-body">
+                            {{ sku.sku_name }}
+                          </div>
+                        </div>
+                      </td>
+                      <td scope="row">
+                        <div class="media align-items-center">
+                          <div class="media-body">
+                            {{ sku.total_value }}
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div class="card-footer py-4">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% include "includes/footer.html" %}
+
+  </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}
