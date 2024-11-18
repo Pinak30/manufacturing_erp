@@ -74,7 +74,7 @@
               <span class="nav-link-text">All Products</span>
             </a>
           <li class="nav-item">
-            <a class="nav-link {% if 'all_product_list' in segment %} active {% endif %}" href="{% url 'all_product_list' %}">
+            <a class="nav-link {% if 'orders' in segment %} active {% endif %}" href="{% url 'orders' %}">
               <i class="fas fa-clipboard-list"></i>
               <span class="nav-link-text">Purchase Order</span>
             </a>
@@ -83,7 +83,7 @@
               <i class="fas fa-coins"></i>
               <span class="nav-link-text">Inventory Value</span>
             </a>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link {% if 'inventory_transaction_summary' in segment %} active {% endif %}" href="{% url 'inventory_transaction_summary' %}">
               <i class="fas fa-book"></i>
               <span class="nav-link-text">Inventory Transaction Summary</span>
@@ -92,7 +92,7 @@
             <a class="nav-link {% if 'stoke_movement_analysis' in segment %} active {% endif %}" href="{% url 'stoke_movement_analysis' %}">
               <i class="fas fa-dolly-flatbed"></i>
               <span class="nav-link-text">Stock Movement Analysis</span>
-            </a>
+            </a> -->
           <!-- <li class="nav-item">
             <a class="nav-link {% if 'open_purchase_orders' in segment %} active {% endif %}" href="{ % url 'open_purchase_orders' %}">
               <i class="fas fa-boxes"></i>

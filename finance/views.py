@@ -83,9 +83,9 @@ def expense(request):
 
 
 def budget(request):
-        budgets = Budget.objects.all()
-        context = {
-        'app_name': 'Finance',  # Pass app name dynamically
+    budgets = Budget.objects.order_by('-year')  
+    context = {
+        'app_name': 'Finance', 
         'budgets': budgets,
     }
-        return render(request, 'home/budget.html',context)
+    return render(request, 'home/budget.html', context)

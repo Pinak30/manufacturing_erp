@@ -1,0 +1,95 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Purchase Order List {% endblock title %}
+
+{% block content %}
+<div class="header bg-primary pb-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+          <h6 class="h2 text-white d-inline-block mb-0">Purchase Orders</h6>
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+              <li class="breadcrumb-item"><a href="{% url 'inventory' %}"><i class="fas fa-home"></i></a></li>
+              <li class="breadcrumb-item active" style="color: #8898aa;"><a href="{% url 'orders' %}">Purchase Orders</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'orders_lists' %}">Purchase Order List</a></li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+  <!-- Purchase Orders Table -->
+  <div class="row">
+    <div class="col">
+      <div class="card bg-default shadow">
+        <div class="card-header bg-transparent border-0">
+          <h3 class="text-white mb-0">Purchase Orders</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-dark table-flush">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Sr No.</th>
+                <th scope="col">Purchase Order ID</th>
+                <th scope="col">Supplier Name</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Expected Delivery Date</th>
+                <th scope="col">Total Amount</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in purchase_orders %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ order.purchase_order_id }}</td>
+                <td>{{ order.supplier_id.supplier_name }}</td>
+                <td>{{ order.order_date }}</td>
+                <td>{{ order.expected_delivery_date }}</td>
+                <td>{{ order.total_amount }}</td>
+                <td>
+                  {% if order.delivered %}
+                    <span class="badge badge-success">Delivered</span>
+                  {% else %}
+                    <span class="badge badge-warning">Pending</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if not order.delivered %}
+                  <form method="post" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="purchase_order_id" value="{{ order.purchase_order_id }}">
+                    <button type="submit" class="btn btn-sm btn-primary">Mark as Delivered</button>
+                  </form>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer py-4">
+          <nav aria-label="...">
+            <ul class="pagination justify-content-end mb-0">
+              <!-- Add pagination links here if required -->
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "includes/footer.html" %}
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Add any specific JS for this page here -->
+{% endblock javascripts %}

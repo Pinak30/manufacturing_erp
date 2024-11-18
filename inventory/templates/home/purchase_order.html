@@ -1,0 +1,91 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 col-7">
+            <h6 class="h2 text-white d-inline-block mb-0">Purchase Orders</h6>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                <li class="breadcrumb-item"><a href="{% url 'inventory' %}"><i class="fas fa-home"></i></a></li>
+                <li class="breadcrumb-item active" style="color: #8898aa;"><a href="{% url 'orders' %}">Purchase Orders</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'orders_lists' %}">Purchase Order List</a></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col">
+            <div class="card bg-default shadow">
+                <div class="card-header bg-transparent">
+                    <h3 class="text-white mb-0">Create Purchase Order</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="text-white">Select Raw Material</label>
+                                <select name="raw_material_id" class="form-control" id="raw_material_id" onchange="this.form.submit()" required>
+                                    <option disabled selected>Choose a raw material</option>
+                                    {% for material in raw_materials %}
+                                        <option value="{{ material.raw_material_id }}" {% if material == selected_raw_material %}selected{% endif %}>
+                                            {{ material.raw_material_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        {% if selected_raw_material %}
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <label class="text-white">Select Supplier</label>
+                                <select name="supplier_id" class="form-control" required>
+                                    <option disabled selected>Choose a supplier</option>
+                                    {% for supplier in suppliers %}
+                                        <option value="{{ supplier.supplier_id }}" {% if supplier == selected_supplier %}selected{% endif %}>
+                                            {{ supplier.supplier_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-white">Enter Quantity</label>
+                                <input type="number" name="quantity" class="form-control" value="{{ entered_quantity }}" min="1" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <label class="text-white">Order Date</label>
+                                <input type="date" name="order_date" class="form-control" value="{{ entered_order_date }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="text-white">Delivery Date</label>
+                                <input type="date" name="delivery_date" class="form-control" value="{{ entered_delivery_date }}" required>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <label for="unit_price">Unit Price:</label>
+                                <input type="number" step="0.01" name="unit_price" value="{{ entered_unit_price }}" required> <!-- New Field -->
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <button type="submit" class="btn btn-primary mt-4">Create Purchase Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

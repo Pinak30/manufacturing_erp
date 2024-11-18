@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
-from mongoengine import Q
+from finance.models import *
 from django.utils import timezone
 from datetime import timedelta
-from datetime import date
+from datetime import datetime
+from django.utils.timezone import now
 
 # Create your views here.
 def inventory(request):
@@ -117,6 +118,193 @@ def all_product_list(request):
         'sku' : sku,
     }
     return render(request, 'home/all_product.html',context)
+
+
+def purchase_order(request):
+    # Fetch all raw materials
+    raw_materials = RawMaterial.objects.all()
+    suppliers = []
+    selected_raw_material = None
+    selected_supplier = None
+    entered_quantity = 0
+    entered_unit_price = 0  
+    entered_order_date = ""
+    entered_delivery_date = ""
+    total_amount = 0  # Variable to hold total amount
+
+    # Fetch the last purchase order and purchase order finance to continue the purchase_order_id from 9797
+    last_purchase_order_finance = PurchaseOrderFinance.objects.order_by('-purchase_order_id').first()
+    next_purchase_order_id = 9797 if not last_purchase_order_finance else last_purchase_order_finance.purchase_order_id + 1
+
+    # Fetch the last purchase order item to continue the purchase_order_item_id from 1550
+    last_purchase_order_item = PurchaseOrderItem.objects.order_by('-purchase_order_item_id').first()
+    next_purchase_order_item_id = 1550 if not last_purchase_order_item else last_purchase_order_item.purchase_order_item_id + 1
+
+    # Fetch the last expense to continue the expense_id from 1e642681
+    last_expense = Expense.objects.order_by('-expense_id').first()
+    next_expense_id = '1e642681' if not last_expense else hex(int(last_expense.expense_id, 16) + 1)[2:]
+
+    # Fetch the last transaction ID for Transaction
+    last_transaction = Transaction.objects.order_by('-transaction_id').first()
+    next_transaction_id = '5a1332' if not last_transaction else hex(int(last_transaction.transaction_id, 16) + 1)[2:]
+
+    if request.method == 'POST':
+        # Get the selected raw material and supplier from the form submission
+        selected_raw_material_id = request.POST.get('raw_material_id')
+        selected_supplier_id = request.POST.get('supplier_id')
+        entered_quantity = request.POST.get('quantity', 0)
+        entered_unit_price = request.POST.get('unit_price', 0)  
+        entered_order_date = request.POST.get('order_date', "")
+        entered_delivery_date = request.POST.get('delivery_date', "")
+
+        # Fetch the selected raw material and suppliers based on the raw material
+        if selected_raw_material_id:
+            selected_raw_material = RawMaterial.objects.get(raw_material_id=selected_raw_material_id)
+            # Fetch the suppliers for the selected raw material
+            suppliers = Supplier.objects.filter(raw_material_id=selected_raw_material)
+
+        if selected_supplier_id:
+            selected_supplier = Supplier.objects.get(supplier_id=selected_supplier_id)
+
+        # Calculate total amount based on selected quantity and raw material price
+        if entered_quantity and entered_unit_price:
+            total_amount = float(entered_quantity) * float(entered_unit_price)
+
+            # Create the PurchaseOrderFinance object
+            purchase_order_finance = PurchaseOrderFinance.objects.create(
+                purchase_order_id=next_purchase_order_id,
+                order_date=datetime.strptime(entered_order_date, '%Y-%m-%d'),
+                supplier_id=selected_supplier,
+                total_amount=total_amount,
+                expected_delivery_date=datetime.strptime(entered_delivery_date, '%Y-%m-%d'),
+            )
+            purchase_order_finance.save()
+
+            # Create the PurchaseOrder object (same purchase_order_id as PurchaseOrderFinance)
+            purchase_order = PurchaseOrder.objects.create(
+                purchase_order_id=next_purchase_order_id,
+                supplier_id=selected_supplier.supplier_id,
+                order_date=datetime.strptime(entered_order_date, '%Y-%m-%d'),
+            )
+            purchase_order.save()
+
+            # Create the PurchaseOrderItem entry for the raw material
+            purchase_order_item = PurchaseOrderItem.objects.create(
+                purchase_order_item_id=next_purchase_order_item_id,
+                purchase_order_id=purchase_order,
+                raw_material_id=selected_raw_material,
+                quantity=entered_quantity,
+                price_per_unit=entered_unit_price,
+            )
+            purchase_order_item.save()
+
+            # Create the Expense entry with expense_type as "Inventory"
+            expense = Expense.objects.create(
+                expense_id=next_expense_id,
+                expense_type="inventory",
+                amount=total_amount,
+                purchase_order_id=purchase_order_finance,
+            )
+            expense.save()
+
+            # Update Account balances
+            debit_account = Account.objects.get(account_id=462346553)
+            credit_account = Account.objects.get(account_id=493446675)
+
+            debit_account.balance += total_amount
+            credit_account.balance -= total_amount
+
+            debit_account.save()
+            credit_account.save()
+
+            # Update General Ledger closing balances
+            ledger_118 = GeneralLedger.objects.get(ledger_id="23LED118a")
+            ledger_120 = GeneralLedger.objects.get(ledger_id="23LED120")
+
+            ledger_118.closing_balance -= total_amount
+            ledger_120.closing_balance -= total_amount
+
+            ledger_118.save()
+            ledger_120.save()
+
+            # Create the Transaction entry
+            transaction = Transaction.objects.create(
+                transaction_id=next_transaction_id,
+                transaction_date=datetime.strptime(entered_order_date, '%Y-%m-%d'),
+                amount=total_amount,
+                account_id=credit_account,
+                ledger_id=ledger_120,
+                payment_id=None,  # Payment ID is null
+                expense_id=expense,
+            )
+            transaction.save()
+
+            # Redirect to a success page or pass success message
+            return render(request, 'home/purchase_order_success.html', {'purchase_order': purchase_order})
+
+    # Default context when the form has not been submitted yet
+    context = {
+        'raw_materials': raw_materials,
+        'suppliers': suppliers,
+        'selected_raw_material': selected_raw_material,
+        'selected_supplier': selected_supplier,
+        'entered_quantity': entered_quantity,
+        'entered_order_date': entered_order_date,
+        'entered_delivery_date': entered_delivery_date,
+        'entered_unit_price': entered_unit_price,
+        'total_amount': total_amount,
+        'app_name': 'Inventory',
+    }
+
+    return render(request, 'home/purchase_order.html', context)
+
+
+def purchase_order_list(request):
+    # Fetch all purchase orders from PurchaseOrderFinance
+    purchase_orders = PurchaseOrderFinance.objects.all()
+
+    # Fetch the last inventory ID for InventoryRawMaterial
+    last_inventory = InventoryRawMaterial.objects.order_by('-inventory_id').first()
+    next_inventory_id = 44525 if not last_inventory else last_inventory.inventory_id + 1
+
+    if request.method == 'POST':
+        # Handle the "Delivered" button action
+        purchase_order_id = request.POST.get('purchase_order_id')
+
+        # Fetch the purchase order
+        purchase_order = PurchaseOrderFinance.objects.filter(purchase_order_id=purchase_order_id).first()
+        if purchase_order:
+            # Check if the expected delivery date is today or in the past
+            if purchase_order.expected_delivery_date <= now().date():
+                # Fetch the related PurchaseOrderItem based on the foreign key
+                purchase_order_item = PurchaseOrderItem.objects.filter(purchase_order_id=purchase_order_id).first()
+
+                if purchase_order_item:
+                    # Add the raw material from PurchaseOrderItem to the inventory
+                    InventoryRawMaterial.objects.create(
+                        inventory_id=next_inventory_id,
+                        raw_material_id=purchase_order_item.raw_material_id,
+                        quantity_in_stock=purchase_order_item.quantity,  # Get quantity from the matched item
+                        location=None,  # Example location
+                        manufacturing_date=purchase_order.order_date,  # Leave empty if not provided
+                        order_date=purchase_order.order_date,
+                    )
+                    next_inventory_id += 1
+
+                    # Mark the purchase order as delivered (optional: add a delivered flag in PurchaseOrderFinance)
+                    purchase_order.delivered = True
+                    purchase_order.save()
+
+        # Redirect to refresh the page
+        return redirect('orders_lists')  # Use the URL name of this view
+
+    # Pass the purchase orders to the template
+    context = {
+        'purchase_orders': purchase_orders,
+        'app_name': 'Inventory',
+    }
+
+    return render(request, 'home/purchase_order_list.html', context)
 
 
 def inventory_value(request):
