@@ -80,18 +80,20 @@
                                     <table class="table table-dark">
                                         <thead>
                                             <tr>
+                                                <th scope="col">Sr No.</th>
                                                 <th scope="col">Employee Name</th>
                                                 <th scope="col">Designation</th>
-                                                <th scope="col">Shift Type</th>
+                                                <!-- <th scope="col">Shift Type</th> -->
                                                 <th scope="col">Date Assigned</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% for assignment in assignments %}
                                                 <tr>
+                                                    <td>{{ forloop.counter }}</td>
                                                     <td>{{ assignment.employee_name }}</td>
                                                     <td>{{ assignment.designation_id.designation_name }}</td>
-                                                    <td>{{ assignment.shift_type }}</td>
+                                                    <!-- <td>{{ assignment.shift_type }}</td> -->
                                                     <td>{{ assignment.date_assigned }}</td>
                                                 </tr>
                                             {% endfor %}
