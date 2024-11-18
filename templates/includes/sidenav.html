@@ -1,3 +1,4 @@
+{% load static %}
 <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
   {% if app_name == 'HR' %}
   <div class="scrollbar-inner">
@@ -133,25 +134,25 @@
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'masterproduction' in segment %} active {% endif %}" href="{% url 'masterproduction' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-calendar-alt"></i>
               <span class="nav-link-text">Master Production Scheduling</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'bommanagement' in segment %} active {% endif %}" href="{% url 'bommanagement' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-tasks"></i>
               <span class="nav-link-text">BOM</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'materialreqplan' in segment %} active {% endif %}" href="{% url 'materialreqplan' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-calculator"></i>
               <span class="nav-link-text">Material Requirement Planning</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'workordermanage' in segment %} active {% endif %}" href="{% url 'workordermanage' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-pen-square"></i>
               <span class="nav-link-text">Work Order Management</span>
             </a>
           </li>
@@ -179,55 +180,55 @@
             </a>
           <li class="nav-item">
             <a class="nav-link {% if 'generalLedger' in segment %} active {% endif %}" href="{% url 'generalLedger' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-book"></i>
               <span class="nav-link-text">Ledgers</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'transaction' in segment %} active {% endif %}" href="{% url 'transaction' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-cash-register"></i>
               <span class="nav-link-text">Transactions</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'account' in segment %} active {% endif %}" href="{% url 'account' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-book-open"></i>
               <span class="nav-link-text">Accounts</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'invoice' in segment %} active {% endif %}" href="{% url 'invoice' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-file-invoice-dollar"></i>
               <span class="nav-link-text">Invoices</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'payment' in segment %} active {% endif %}" href="{% url 'payment' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-rupee-sign"></i>
               <span class="nav-link-text">Payments</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'customer' in segment %} active {% endif %}" href="{% url 'customer' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-users"></i>
               <span class="nav-link-text">Customers</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'purchaseorder' in segment %} active {% endif %}" href="{% url 'purchaseorder' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-shopping-cart"></i>
               <span class="nav-link-text">Purchase Orders</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'expense' in segment %} active {% endif %}" href="{% url 'expense' %}">
-              <i class="fas fa-layer-group"></i>
+              <i class="fas fa-wallet"></i>
               <span class="nav-link-text">Expenses</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'budget' in segment %} active {% endif %}" href="{% url 'budget' %}">
-              <i class="fas fa-layer-group"></i>
+              <img src="{% static 'sack-dollar.png' %}" style="width: 18.5px;height: 18.5px;">&nbsp;&nbsp;&nbsp;&nbsp;
               <span class="nav-link-text">Budgets</span>
             </a>
           </li>
