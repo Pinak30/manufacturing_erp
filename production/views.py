@@ -2,7 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BOMForm
 from .models import *
 from inventory.models import InventoryRawMaterial
+from authentication.models import Employee
 from django.contrib import messages
+from django.http import JsonResponse
+from datetime import date
+import re
+
 
 # Create your views here.
 def production(request):
@@ -11,15 +16,63 @@ def production(request):
     }
         return render(request, 'home/production.html',context)
 
+# Helper function to get the next assignment_id
+# def get_next_assignment_id():
+#     from django.db.models import Max
+#     last_assignment = ProductionShiftAssignments.objects.aggregate(Max('_id'))
+#     return (last_assignment['_id__max'] or 0) + 1
+
+def generate_production_order_id():
+    try:
+        last_prod_order_id = ProductionOrder.objects.order_by('-production_order_id').first()
+        if last_prod_order_id:
+            last_id = last_prod_order_id.production_order_id
+            new_id = f"{last_id + 1:05d}"
+        else:
+            new_id = f"00000000000001"
+    except last_prod_order_id.DoesNotExist:
+        new_id = f"00000000000001"
+    return new_id
+
+def generate_plan_id():
+    prefix = "la"
+    try:
+        # Fetch the last plan_id, ordered by descending order
+        last_plan_id = PlanProduction.objects.order_by('-plan_id').first()
+        
+        if last_plan_id:
+            last_id_str = last_plan_id.plan_id.replace(prefix, "")  # Remove prefix 'la'
+            numeric_part = re.sub(r'\D', '', last_id_str)  # \D matches anything that is not a digit
+            last_id = int(numeric_part) if numeric_part else 0
+            new_id = f"{prefix}{last_id + 1:011d}"  # Adjust padding as needed
+        else:
+            new_id = f"{prefix}00000000001"  # Start from this if no records exist
+    except Exception as e:
+        new_id = f"{prefix}00000000001"  # In case of any error, start from this
+        print(f"Error in generating plan_id: {e}")
+    
+    return new_id
 
 def masterproduction(request):
     bom_list = BOM.objects.all()
     selected_sku_id = request.GET.get("sku_id")
     entered_quantity = request.GET.get("quantity", 0)
 
+    # Automatically generate producrtion_order_id
+    production_order_id = generate_production_order_id()
+    # Insert in production_order
+    ProductionOrder.objects.create(
+        production_order_id=production_order_id,
+        sku_id=selected_sku_id,
+        order_date=date.today(),
+        planned_quantity=entered_quantity,
+        status=1
+    )
+
     selected_bom = None
     raw_materials_info = []
     batches_info = {}
+    assignments = []  # Initialize assignments as an empty list
 
     if selected_sku_id and entered_quantity:
         selected_bom = BOM.objects.filter(sku_id=selected_sku_id).first()
@@ -49,9 +102,82 @@ def masterproduction(request):
             batches_info = {
                 "batch_size": quantity_to_be_produced,
                 "batches_required": full_batches + (1 if remainder else 0),
-                "batch_distribution": [quantity_to_be_produced] * full_batches + ([remainder] if remainder else [])
+                "batch_distribution": [quantity_to_be_produced] * full_batches + ([remainder] if remainder else []),
             }
+            
+            # Automatically generate plan_id
+            plan_id = generate_plan_id()
+            # Insert in plan_production
+            PlanProduction.objects.create(
+                plan_id=plan_id,
+                production_order_id=production_order_id,
+                bom_id=selected_bom.bom_id,
+                batch_design=[quantity_to_be_produced] * full_batches + ([remainder] if remainder else []),
+                no_of_batches=full_batches + (1 if remainder else 0),
+                reorder_status=1,
+                status=1,
+            )
 
+            # Work shift assignment (simplified)
+            try:
+                # Loop through each designation and its required workers
+                for index, designation_id in enumerate(selected_bom.designation_id):
+                    required_workers = selected_bom.required_worker[index]
+                    
+                    # Fetch employees with matching designation_id (no check for already assigned employees)
+                    available_employees = Employee.objects.filter(
+                        designation_id=designation_id
+                    )[:required_workers]  # Ensure we only fetch the required number of employees
+                    
+                    # Loop through the selected employees and assign them to shifts
+                    for employee in available_employees:
+                        shift_timing = employee.shift_timings.lower()
+                        try:
+                            # Match shift_type in WorkShift to the employee's shift_timing
+                            work_shift = WorkShift.objects.get(shift_type=shift_timing)
+
+                            # Generate the next assignment ID
+                            next_assignment_id = 13335535
+
+                            # Create the ProductionShiftAssignments entry
+                            # ProductionShiftAssignments.objects.create(
+                            #     _id=next_assignment_id,
+                            #     shift_id=work_shift,
+                            #     employee_id=employee,
+                            #     date_assigned=date.today()
+                            # )
+
+                            # Add the assignment to the list
+                            assignments.append({
+                                "_id": next_assignment_id,
+                                "employee_name": employee.employee_name,
+                                "designation_id": designation_id,
+                                "shift_type": shift_timing,
+                                "date_assigned":date.today()
+                            })
+                            next_assignment_id+1
+                        except WorkShift.DoesNotExist:
+                            return JsonResponse({"error": f"No work shift found for timing: {shift_timing}"}, status=404)
+
+                # Return the response with assignments included in the context
+                context = {
+                    'app_name': 'Production',
+                    'bom_list': bom_list,
+                    'selected_bom': selected_bom,
+                    'raw_materials_info': raw_materials_info,
+                    'selected_sku_id': selected_sku_id,
+                    'entered_quantity': entered_quantity,
+                    'batches_info': batches_info,
+                    'assignments': assignments,  # Pass assignments here
+                }
+                return render(request, 'home/masterproduction.html', context)
+
+            except BOM.DoesNotExist:
+                return JsonResponse({"error": "BOM not found"}, status=404)
+            except Exception as e:
+                return JsonResponse({"error": str(e)}, status=500)
+
+    # Default context if no SKU is selected or no quantity is entered
     context = {
         'app_name': 'Production',
         'bom_list': bom_list,
@@ -59,8 +185,10 @@ def masterproduction(request):
         'raw_materials_info': raw_materials_info,
         'selected_sku_id': selected_sku_id,
         'entered_quantity': entered_quantity,
-        'batches_info': batches_info
+        'batches_info': batches_info,
+        'assignments': assignments,  # Ensure assignments is included in context
     }
+
     return render(request, 'home/masterproduction.html', context)
 
 
