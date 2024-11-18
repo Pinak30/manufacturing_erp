@@ -124,15 +124,15 @@ def masterproduction(request):
 
                     for employee in available_employees:
                         shift_timing = employee.shift_timings.lower()
-                        work_shift = WorkShift.objects.get(shift_type=shift_timing)
+                        # work_shift = WorkShift.objects.get(shift_type=shift_timing)
                         next_assignment_id = get_next_assignment_id()
 
-                        ProductionShiftAssignments.objects.create(
-                            assignment_id=next_assignment_id,
-                            shift_id=work_shift.shift_id,
-                            employee_id=employee.employee_id,
-                            date_assigned=date.today()
-                        )
+                        # ProductionShiftAssignments.objects.create(
+                        #     assignment_id=next_assignment_id,
+                        #     shift_id=work_shift.shift_id,
+                        #     employee_id=employee.employee_id,
+                        #     date_assigned=date.today()
+                        # )
 
                         assignments.append({
                             "assignment_id": str(next_assignment_id),
