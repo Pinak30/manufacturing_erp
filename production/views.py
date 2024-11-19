@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BOMForm
 from .models import *
-from inventory.models import InventoryRawMaterial
+from inventory.models import InventoryRawMaterial, RawMaterial
 from authentication.models import Employee
 from django.contrib import messages
 from django.http import JsonResponse
-from datetime import date
+from datetime import date, datetime
 import re
 
 
@@ -170,6 +170,7 @@ def masterproduction(request):
 
     return render(request, 'home/masterproduction.html', context)
 
+
 def bommanagement(request):
     """
     List all BOMs with basic details.
@@ -279,13 +280,99 @@ def viewbom(request, bom_id):
 
     return render(request, 'home/viewbom.html', context)
 
-
 def materialreqplan(request):
-        context = {
-        'app_name': 'Production',  # Pass app name dynamically
-    }
-        return render(request, 'home/materialreqplan.html',context)
+    data = []
 
+    plan_productions = PlanProduction.objects.all()
+
+    for plan in plan_productions:
+        bom = plan.bom_id
+        sku = bom.sku_id
+        production_order = plan.production_order_id
+
+        # Build data for the table
+        if bom and sku and production_order:
+            data.append({
+                'product_name': sku.sku_name,
+                'quantity': production_order.planned_quantity,
+                'order_date': production_order.order_date.strftime('%d/%m/%Y'),
+                'plan_id': plan.plan_id
+            })
+    context = {
+        'app_name': 'Production',  # Pass app name dynamically
+        'data': data,  # Include table data
+    }
+    return render(request, 'home/materialreqplan.html', context)
+
+
+def batchview(request, plan_id):
+    # Fetch the selected plan production and BOM
+    plan_production = PlanProduction.objects.get(plan_id=plan_id)
+    bom = plan_production.bom_id
+    raw_materials_info = []
+    batches_info = []
+
+    # Retrieve BOM and related details
+    planned_quantity = plan_production.production_order_id.planned_quantity
+    qty_to_be_produced = bom.qty_to_be_produced
+    full_batches = planned_quantity // qty_to_be_produced
+    remainder = planned_quantity % qty_to_be_produced
+    batch_distribution = [qty_to_be_produced] * full_batches + ([remainder] if remainder else [])
+
+    # Process each batch
+    for batch_index, batch_qty in enumerate(batch_distribution, start=1):
+        batch_data = []
+        for index, raw_material in enumerate(bom.raw_material_id):
+            inventory_item = InventoryRawMaterial.objects.filter(raw_material_id=raw_material).first()
+            actual_qty = inventory_item.quantity_in_stock if inventory_item else 0
+            required_qty = batch_qty * bom.qty_required[index] // qty_to_be_produced
+
+            # Adjust actual quantity based on previous batches
+            if batch_index > 1:
+                previous_batches_qty = sum(batch_distribution[:batch_index - 1]) * bom.qty_required[index] // qty_to_be_produced
+                actual_qty -= previous_batches_qty
+
+            needs_reorder = actual_qty < required_qty
+
+            batch_data.append({
+                "raw_material_name": raw_material.raw_material_name,
+                "actual_quantity": actual_qty,
+                "required_quantity": required_qty,
+                "needs_reorder": needs_reorder,
+            })
+
+        batches_info.append({
+            "batch_number": batch_index,
+            "batch_quantity": batch_qty,
+            "materials": batch_data,
+        })
+
+    context = {
+        'app_name': 'Production',
+        'plan_production': plan_production,
+        'batches_info': batches_info,
+    }
+
+    return render(request, 'home/batchview.html', context)
+
+
+def calculate_actual_quantity(batch_num, material, inventory_data, material_qty_required):
+    # Calculate actual quantity considering previous batches' consumption
+    actual_quantity = inventory_data[material.id][0].quantity_in_stock
+    for i in range(1, batch_num):
+        actual_quantity -= material_qty_required
+    return actual_quantity
+
+def deleteplan(request, plan_id):
+    # Try to fetch and delete the plan production
+    try:
+        plan_production = PlanProduction.objects.get(plan_id=plan_id)
+        plan_production.delete()
+        messages.success(request, f"Plan with ID {plan_id} has been successfully deleted.")
+    except PlanProduction.DoesNotExist:
+        messages.error(request, f"Plan with ID {plan_id} does not exist.")
+    
+    return redirect('materialreqplan')
 
 def workordermanage(request):
         context = {

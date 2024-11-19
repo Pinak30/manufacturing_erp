@@ -1,0 +1,51 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col">
+            <div class="card bg-default shadow">
+                <div class="card-header bg-transparent">
+                    <h3 class="text-white mb-0"><a href="{% url 'materialreqplan' %}"><i class="fas fa-home" style="color:beige;"></i></a>&nbsp;&nbsp; Material Reqirement Planning</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="container">
+                            <h2 style="color: beige;">Batch View for Plan: {{ plan_production.plan_id }}</h2>
+                            {% for batch in batches_info %}
+                                <h3 style="color: beige;">Batch {{ batch.batch_number }} (Quantity: {{ batch.batch_quantity }})</h3>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr style="color: beige;">
+                                            <th>Raw Material Name</th>
+                                            <th>Actual Quantity</th>
+                                            <th>Required Quantity</th>
+                                            <th>Reorder</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for material in batch.materials %}
+                                            <tr style="color: beige;">
+                                                <td>{{ material.raw_material_name }}</td>
+                                                <td>{{ material.actual_quantity }}</td>
+                                                <td>{{ material.required_quantity }}</td>
+                                                <td>
+                                                    {% if material.needs_reorder %}
+                                                        <button class="btn btn-warning">Reorder</button>
+                                                    {% else %}
+                                                        <span class="text-success">Sufficient</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
