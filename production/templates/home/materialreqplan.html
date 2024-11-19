@@ -17,6 +17,7 @@
                                     <th scope="col">Product Name</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Order Date</th>
+                                    <th scope="col">Plan Date</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -28,6 +29,10 @@
                                         <td>{{ row.product_name }}</td>
                                         <td>{{ row.quantity }}</td>
                                         <td>{{ row.order_date }}</td>
+                                        <td>{{ row.plan_date }}
+                                            {{ row.order_date }}
+                                            <!-- <input type="date" name="plan_date_{{ row.plan_id }}" class="form-control plan-date" data-plan-id="{{ row.plan_id }}"> -->
+                                        </td>                                        
                                         <td scope="row">
                                             <div class="dropdown">
                                             <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,3 +55,34 @@
     </div>
 </div>
 {% endblock content %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".plan-date").forEach(input => {
+            input.addEventListener("change", function () {
+                const planId = this.getAttribute("data-plan-id");
+                const selectedDate = this.value;
+
+                if (selectedDate) {
+                    fetch(`/update_plan_date/${planId}/`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        },
+                        body: JSON.stringify({ plan_date: selectedDate })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("Plan date updated successfully!");
+                        } else {
+                            alert("Failed to update plan date.");
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+                }
+            });
+        });
+    });
+</script>
