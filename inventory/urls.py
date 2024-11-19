@@ -11,6 +11,7 @@ urlpatterns = [
     path('all_product/', all_product_list, name='all_product_list'),
     path('orders/', purchase_order, name='orders'),
     path('orders_lists/', purchase_order_list, name='orders_lists'),
+    path('daily_orders/', order_list_view, name='customer_orders'),
     path('inventory_value/', inventory_value, name='inventory_value'),
     path('inventory_transaction/', inventory_transaction_summary, name='inventory_transaction_summary'),
     path('stoke_movement_analysis/', stoke_movement_analysis, name='stoke_movement_analysis'),

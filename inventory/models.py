@@ -1,6 +1,7 @@
 from mongoengine import Document, StringField, ReferenceField, IntField, DateField, DecimalField
 from datetime import timedelta
 
+
 class Material(Document):
     material_id = IntField(primary_key=True)  
     material_name = StringField(required=True)
@@ -82,3 +83,6 @@ class ProductInventory(Document):
     location = StringField()
     manufacturing_date = DateField()
     expiry_date = DateField()
+
+
+ 

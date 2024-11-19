@@ -1,6 +1,6 @@
 import json
 from mongoengine import connect
-from production.models import BOM  # Adjust your model import if needed
+from finance.models import Order  # Adjust your model import if needed
 
 
 connect(
@@ -13,17 +13,14 @@ with open(r'C:\Users\Pinak\MCA\PythonDjango\programs\manufacturing_erp\data.json
 
 # Iterate over the data and add it to the database
 for item in data:
-    b_o_m = BOM(
-        bom_id=item["bom_id"],
-        sku_id=item["sku_id"],  # Assuming sku_id is a single value
-        raw_material_id=item["raw_material_id"],  # Directly use the list
-        qty_required=item["qty_required"],  # Directly use the list of floats
-        machine_required=item["machine_required"],  # Directly use the list of strings
-        designation_id=item["designation_id"],  # Directly use the list of integers
-        required_worker=item["required_worker"],  # Directly use the list of integers
-        by_product=item["by_product"] if item["by_product"] is not None else None,  # Handle None value
-        qty_to_be_produced=int(item["qty_to_be_produced"])  # Ensure it's an integer
+    order = Order(
+        order_id=item["order_id"],
+        customer_id=item["customer_id"],  # Reference to existing Customer
+        sku_id=item["sku_id"],  # Reference to existing SKU
+        qty=item["qty"],
+        regularity=item["regularity"],
+        day=item["day"]
     )
-    b_o_m.save()
+    order.save()
 
 print("Data successfully added to the database.")

@@ -80,6 +80,11 @@
               <span class="nav-link-text">Purchase Order</span>
             </a>
           <li class="nav-item">
+            <a class="nav-link {% if 'customer_orders' in segment %} active {% endif %}" href="{% url 'customer_orders' %}">
+              <i class="fas fa-clipboard-list"></i>
+              <span class="nav-link-text">Customer Orders</span>
+            </a>
+          <li class="nav-item">
             <a class="nav-link {% if 'inventory_value' in segment %} active {% endif %}" href="{% url 'inventory_value' %}">
               <i class="fas fa-coins"></i>
               <span class="nav-link-text">Inventory Value</span>

@@ -1,5 +1,5 @@
 from mongoengine import Document, StringField, DateField, FloatField, ReferenceField, IntField, ListField
-from inventory.models import RawMaterial
+from inventory.models import RawMaterial, Sku
 
 
 class GeneralLedger(Document):
@@ -76,4 +76,12 @@ class Budget(Document):
     total_budget = FloatField(required=True)
     allocated_amount = FloatField(required=True)
 
+
+class Order(Document):
+    order_id = IntField(required=True, unique=True)  # Unique identifier for the order
+    customer_id = ReferenceField(Customer, reverse_delete_rule=4)        # Customer identifier (String to handle large IDs)
+    sku_id = ReferenceField(Sku, reverse_delete_rule=4)             # Stock Keeping Unit ID
+    qty = IntField(required=True)                # Quantity of items in the order
+    regularity = IntField(required=True)        # Regularity of the order (e.g., subscription pattern)
+    day = IntField(required=True)              # Day associated with the order (e.g., delivery day)
 

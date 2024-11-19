@@ -5,6 +5,7 @@ from django.utils import timezone
 from datetime import timedelta
 from datetime import datetime
 from django.utils.timezone import now
+import re
 
 # Create your views here.
 def inventory(request):
@@ -305,6 +306,117 @@ def purchase_order_list(request):
     }
 
     return render(request, 'home/purchase_order_list.html', context)
+
+
+def increment_id(current_id):
+    """
+    Increment the numeric portion at the end of an alphanumeric ID.
+
+    Args:
+        current_id (str): The current ID to increment.
+
+    Returns:
+        str: The incremented ID.
+    """
+    # Find the last sequence of digits in the ID
+    match = re.search(r'(\d+)(?!.*\d)', current_id)
+    if match:
+        # Extract the numeric part and increment it
+        numeric_part = match.group(1)
+        incremented_part = str(int(numeric_part) + 1)
+
+        # Pad with leading zeros to match the original length
+        incremented_part = incremented_part.zfill(len(numeric_part))
+
+        # Replace the old numeric part with the incremented part
+        return current_id[:match.start()] + incremented_part + current_id[match.end():]
+    else:
+        # If no numeric part is found, return the original ID
+        return current_id
+
+
+def order_list_view(request):
+    # Fetch all orders
+    orders = Order.objects.all()
+
+    # Fetch the last IDs for Invoice, Payment, and Transaction
+    last_invoice = Invoice.objects.order_by('-invoice_id').first()
+    next_invoice_id = increment_id("1a2341b289") if not last_invoice else increment_id(last_invoice.invoice_id)
+
+    last_payment = Payment.objects.order_by('-payment_id').first()
+    next_payment_id = increment_id("1c345v692") if not last_payment else increment_id(last_payment.payment_id)
+
+    last_transaction = Transaction.objects.order_by('-transaction_id').first()
+    next_transaction_id = increment_id("5a1344") if not last_transaction else increment_id(last_transaction.transaction_id)
+
+    if request.method == 'POST':
+        # Handle the "Done" button
+        order_id = request.POST.get('order_id')
+        order = Order.objects.filter(order_id=order_id).first()
+
+        if order:
+            # Get related details
+            customer = order.customer_id
+            sku = order.sku_id
+            raw_material = RawMaterial.objects.filter(raw_material_id=sku.sku_id).first()
+
+            if raw_material:
+                unit_price = raw_material.raw_material_unit_price
+                total_amount = order.qty * unit_price
+
+                # Create Invoice entry
+                invoice = Invoice.objects.create(
+                    invoice_id=next_invoice_id,
+                    invoice_date=datetime.now().date(),
+                    customer_id=customer,
+                    amount=total_amount
+                )
+
+                # Create Payment entry
+                payment = Payment.objects.create(
+                    payment_id=next_payment_id,
+                    payment_date=datetime.now().date(),
+                    amount_paid=total_amount,
+                    invoice_id=invoice
+                )
+
+                # Update the Account balance (for account ID `493446675`)
+                account = Account.objects.filter(account_id=493446675).first()
+                if account:
+                    account.balance += total_amount
+                    account.save()
+
+                # Update General Ledger balances
+                ledger_120 = GeneralLedger.objects.filter(ledger_id="23LED120").first()
+                if ledger_120:
+                    ledger_120.closing_balance += total_amount
+                    ledger_120.save()
+
+                ledger_118 = GeneralLedger.objects.filter(ledger_id="23LED118").first()
+                if ledger_118:
+                    ledger_118.closing_balance += total_amount
+                    ledger_118.save()
+
+                # Create Transaction entry
+                Transaction.objects.create(
+                    transaction_id=next_transaction_id,
+                    transaction_date=datetime.now().date(),
+                    amount=total_amount,
+                    account_id=account,
+                    ledger_id=ledger_120,  # Assuming ledger ID is 23LED120 for this transaction
+                    payment_id=payment,
+                    expense_id=None  # Set to None if expense_id is not provided
+                )
+
+        # Redirect to refresh the page
+        return redirect('order_list')
+
+    # Pass orders to the template
+    context = {
+        'orders': orders,
+        'app_name': 'Inventory',
+    }
+    return render(request, 'home/daily_order.html', context)
 
 
 def inventory_value(request):
