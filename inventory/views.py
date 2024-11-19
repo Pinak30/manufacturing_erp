@@ -3,9 +3,10 @@ from .models import *
 from finance.models import *
 from django.utils import timezone
 from datetime import timedelta
-from datetime import datetime
+from datetime import datetime, date
 from django.utils.timezone import now
 import re
+from django.http import JsonResponse
 
 # Create your views here.
 def inventory(request):
@@ -32,6 +33,42 @@ def stock_qty_raw(request):
         'materials': materials,
     }
     return render(request, 'home/stock_qty_raw.html',context)
+
+
+def expired_items(request):
+    # Fetch expired products from ProductInventory
+    expired_products = ProductInventory.objects.filter(expiry_date__lt=date.today())
+
+    # Fetch expired raw materials from InventoryRawMaterial
+    expired_raw_materials = [
+        material for material in InventoryRawMaterial.objects.all()
+        if material.expiry_date and material.expiry_date < date.today()
+    ]
+
+    # Handle delete request
+    if request.method == "POST":
+        item_type = request.POST.get("item_type")  # 'product' or 'raw_material'
+        item_id = request.POST.get("item_id")
+
+        try:
+            if item_type == "product":
+                item_to_delete = ProductInventory.objects.get(product_inventory_id=item_id)
+            elif item_type == "raw_material":
+                item_to_delete = InventoryRawMaterial.objects.get(inventory_id=item_id)
+            else:
+                return JsonResponse({"success": False, "message": "Invalid item type!"})
+
+            item_to_delete.delete()
+            return JsonResponse({"success": True, "message": "Item deleted successfully!"})
+        except (ProductInventory.DoesNotExist, InventoryRawMaterial.DoesNotExist):
+            return JsonResponse({"success": False, "message": "Item not found!"})
+
+    context = {
+        'app_name': 'Inventory',
+        'expired_products': expired_products,
+        'expired_raw_materials': expired_raw_materials,
+    }
+    return render(request, 'home/expired_items.html', context)
 
 
 def stock_coverage(request):
@@ -219,7 +256,7 @@ def purchase_order(request):
             credit_account.save()
 
             # Update General Ledger closing balances
-            ledger_118 = GeneralLedger.objects.get(ledger_id="23LED118a")
+            ledger_118 = GeneralLedger.objects.get(ledger_id="23LED118")
             ledger_120 = GeneralLedger.objects.get(ledger_id="23LED120")
 
             ledger_118.closing_balance -= total_amount
@@ -241,7 +278,7 @@ def purchase_order(request):
             transaction.save()
 
             # Redirect to a success page or pass success message
-            return render(request, 'home/purchase_order_success.html', {'purchase_order': purchase_order})
+            return render(request, 'home/purchase_order_list.html', {'purchase_order': purchase_order})
 
     # Default context when the form has not been submitted yet
     context = {
