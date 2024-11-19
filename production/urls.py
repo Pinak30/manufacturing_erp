@@ -11,5 +11,6 @@ urlpatterns = [
     path('material_requirement_planning/', materialreqplan, name='materialreqplan'),
     path('material_requirement_planning/batchview/<str:plan_id>/', batchview, name='batchview'),
     path('material_requirement_planning/deleteplan/<str:plan_id>/', deleteplan, name='deleteplan'),
+    # path('update_plan_date/<str:plan_id>/', update_plan_date, name='update_plan_date'),
     path('work_order_management/', workordermanage, name='workordermanage'),
 ]

@@ -5,8 +5,10 @@ from inventory.models import InventoryRawMaterial, RawMaterial
 from authentication.models import Employee
 from django.contrib import messages
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from datetime import date, datetime
 import re
+import json
 
 
 # Create your views here.
@@ -112,6 +114,7 @@ def masterproduction(request):
                 bom_id=selected_bom.bom_id,
                 batch_design=[quantity_to_be_produced] * full_batches + ([remainder] if remainder else []),
                 no_of_batches=full_batches + (1 if remainder else 0),
+                plan_date=date.today(),
                 reorder_status=1,
                 status=1,
             )
@@ -124,15 +127,15 @@ def masterproduction(request):
 
                     for employee in available_employees:
                         shift_timing = employee.shift_timings.lower()
-                        # work_shift = WorkShift.objects.get(shift_type=shift_timing)
+                        work_shift = WorkShift.objects.get(shift_type=shift_timing)
                         next_assignment_id = get_next_assignment_id()
 
-                        # ProductionShiftAssignments.objects.create(
-                        #     assignment_id=next_assignment_id,
-                        #     shift_id=work_shift.shift_id,
-                        #     employee_id=employee.employee_id,
-                        #     date_assigned=date.today()
-                        # )
+                        ProductionShiftAssignments.objects.create(
+                            assignment_id=next_assignment_id,
+                            shift_id=work_shift.shift_id,
+                            employee_id=employee.employee_id,
+                            date_assigned=date.today()
+                        )
 
                         assignments.append({
                             "assignment_id": str(next_assignment_id),
@@ -373,6 +376,32 @@ def deleteplan(request, plan_id):
         messages.error(request, f"Plan with ID {plan_id} does not exist.")
     
     return redirect('materialreqplan')
+
+@csrf_exempt
+def update_plan_date(request, plan_id):
+    if request.method == "POST":
+        try:
+            # Parse JSON data
+            data = json.loads(request.body)
+            selected_date = data.get("plan_date")
+
+            # Convert string date to datetime object
+            date_obj = datetime.strptime(selected_date, "%Y-%m-%d").date()
+
+            # Fetch the PlanProduction object
+            plan_production = PlanProduction.objects.get(plan_id=plan_id)
+
+            # Update the plan_date field with repeated dates based on no_of_batches
+            plan_production.plan_date = [date_obj] * plan_production.no_of_batches
+            plan_production.save()
+
+            return JsonResponse({"success": True, "message": "Plan date updated successfully!"})
+        except PlanProduction.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Plan not found."}, status=404)
+        except Exception as e:
+            return JsonResponse({"success": False, "message": str(e)}, status=500)
+    return JsonResponse({"success": False, "message": "Invalid request method."}, status=405)
+
 
 def workordermanage(request):
         context = {
